@@ -43,7 +43,7 @@ export default function color(value: any, settings: ISugarCssSettings): any {
         `calc((var(--${settings.prefix}color-${color}-s)${sModifier}) * 1%),`,
         `calc((var(--${settings.prefix}color-${color}-l)${lModifier}) * 1%),`,
         `var(--${settings.prefix}color-${color}-a)`,
-        `);`,
+        `)`,
       ].join(''),
     };
   } else {

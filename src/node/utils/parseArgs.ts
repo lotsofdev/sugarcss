@@ -1,6 +1,19 @@
 import { __set } from '@lotsof/sugar/object';
 
-export default function parseArgs(args: any[], schema: string[]): any {
+export interface IParseArgsSettings {
+  separator: string | string[];
+}
+
+export default function parseArgs(
+  args: any[],
+  schema: string[] = [],
+  settings?: Partial<IParseArgsSettings>,
+): any {
+  const finalSettings: IParseArgsSettings = {
+    separator: 'comma',
+    ...(settings ?? {}),
+  };
+
   const resultArgs = {};
 
   let argId = 0,
@@ -16,21 +29,39 @@ export default function parseArgs(args: any[], schema: string[]): any {
         currentProp = `${currentProp}.${arg.value.replace(/-{1,2}/g, '')}`;
         break;
       case 'token':
+      case 'length':
         // when comma, pass to the next arg
-        if (arg.value.type === 'comma') {
+
+        const separators = Array.isArray(finalSettings.separator)
+          ? finalSettings.separator
+          : [finalSettings.separator];
+
+        if (separators.includes(arg.value.type)) {
           argId++;
           currentProp = schema?.[argId] ?? `arg${argId}`;
           continue;
         }
 
         // some tokens to avoid
-        const avoid = ['white-space', 'comment', 'colon', 'semicolon'];
+        const avoid = [
+          'parenthesis-block',
+          'close-parenthesis',
+          'white-space',
+          'comment',
+          'colon',
+          'semicolon',
+        ];
         if (avoid.includes(arg.value.type)) {
           continue;
         }
 
+        let value = arg.value.value;
+        if (arg.value.unit) {
+          value += arg.value.unit;
+        }
+
         // set the value into the resultArgs
-        __set(resultArgs, currentProp, arg.value.value);
+        __set(resultArgs, currentProp, value);
 
         // set the new currentProp
         currentProp = schema?.[argId] ?? `arg${argId}`;
