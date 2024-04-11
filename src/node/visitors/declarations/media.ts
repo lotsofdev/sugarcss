@@ -8,7 +8,12 @@ export default function media(v, settings: ISugarCssSettings): any {
       separator: ['white-space', 'comma'],
     });
 
-  env.medias[media] = args;
+  if (!env.medias[media]) {
+    env.medias[media] = {};
+  }
+
+  env.medias[media].min = parseInt(args.min);
+  env.medias[media].max = parseInt(args.max);
 
   if (settings.verbose) {
     console.log(

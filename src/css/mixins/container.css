@@ -1,0 +1,16 @@
+/**
+ * @name          s-container
+ * @namespace     css.mixins
+ * @type          Mixin 
+ * @platform      css
+ * @status       stable
+ * 
+ * This mixin allows you to quickly create a container with a max-width and centered.
+ *
+ * @since       0.0.1
+ * @author      Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
+ */
+@mixin s-container {
+  max-width: calc(var(--s-layout-max-width) - var(--s-layout-side-padding) * 2);
+  margin: 0 auto;
+}
