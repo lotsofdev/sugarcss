@@ -1,4 +1,4 @@
 export default function scale(v, settings) {
-    console.log(v);
+    // console.log(v);
 }
 //# sourceMappingURL=scale.js.map

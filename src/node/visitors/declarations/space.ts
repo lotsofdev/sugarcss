@@ -20,17 +20,15 @@ export default function space(v, settings: ISugarCssSettings): any {
 
   let value = args[name];
   if (name === 'min' || name === 'max') {
-    value = parseInt(value);
+    value = value.value?.value ?? 0;
   }
 
   env.spaces[name] = value;
 
-  console.log(env.spaces);
-
   if (settings.verbose) {
     console.log(
       `Registered space argument: <cyan>${name}</cyan>: <yellow>${JSON.stringify(
-        args,
+        env.spaces[name],
       )}</yellow>`,
     );
   }

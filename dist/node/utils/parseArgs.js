@@ -1,7 +1,7 @@
 import { __set } from '@lotsof/sugar/object';
 export default function parseArgs(args, schema = [], settings) {
     var _a, _b, _c;
-    const finalSettings = Object.assign({ separator: 'comma' }, (settings !== null && settings !== void 0 ? settings : {}));
+    const finalSettings = Object.assign({ separator: ['comma', 'white-space'] }, (settings !== null && settings !== void 0 ? settings : {}));
     const resultArgs = {};
     let argId = 0, currentProp = (_a = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _a !== void 0 ? _a : `arg${argId}`;
     for (let [i, arg] of args.entries()) {
@@ -14,7 +14,7 @@ export default function parseArgs(args, schema = [], settings) {
                 currentProp = `${currentProp}.${arg.value.replace(/-{1,2}/g, '')}`;
                 break;
             case 'token':
-            case 'length':
+                // case 'length':
                 // when comma, pass to the next arg
                 const separators = Array.isArray(finalSettings.separator)
                     ? finalSettings.separator
@@ -37,14 +37,17 @@ export default function parseArgs(args, schema = [], settings) {
                     continue;
                 }
                 let value = arg.value.value;
-                if (arg.value.unit) {
-                    value += arg.value.unit;
-                }
+                // if (arg.value.unit) {
+                //   value += arg.value.unit;
+                // }
                 // set the value into the resultArgs
                 __set(resultArgs, currentProp, value);
                 // set the new currentProp
                 currentProp = (_c = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _c !== void 0 ? _c : `arg${argId}`;
                 break;
+            default:
+                // handle others
+                __set(resultArgs, currentProp, arg);
         }
     }
     return resultArgs;

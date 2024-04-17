@@ -12,13 +12,13 @@ export default function media(v, settings: ISugarCssSettings): any {
     env.medias[media] = {};
   }
 
-  env.medias[media].min = parseInt(args.min);
-  env.medias[media].max = parseInt(args.max);
+  env.medias[media].min = args.min?.value?.value ?? 0;
+  env.medias[media].max = args.max?.value?.value ?? 0;
 
   if (settings.verbose) {
     console.log(
       `Registered media: <cyan>${media}</cyan>: <yellow>${JSON.stringify(
-        args,
+        env.medias[media],
       )}</yellow>`,
     );
   }

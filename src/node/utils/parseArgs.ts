@@ -10,7 +10,7 @@ export default function parseArgs(
   settings?: Partial<IParseArgsSettings>,
 ): any {
   const finalSettings: IParseArgsSettings = {
-    separator: 'comma',
+    separator: ['comma', 'white-space'],
     ...(settings ?? {}),
   };
 
@@ -29,7 +29,7 @@ export default function parseArgs(
         currentProp = `${currentProp}.${arg.value.replace(/-{1,2}/g, '')}`;
         break;
       case 'token':
-      case 'length':
+        // case 'length':
         // when comma, pass to the next arg
 
         const separators = Array.isArray(finalSettings.separator)
@@ -56,9 +56,10 @@ export default function parseArgs(
         }
 
         let value = arg.value.value;
-        if (arg.value.unit) {
-          value += arg.value.unit;
-        }
+
+        // if (arg.value.unit) {
+        //   value += arg.value.unit;
+        // }
 
         // set the value into the resultArgs
         __set(resultArgs, currentProp, value);
@@ -66,6 +67,9 @@ export default function parseArgs(
         // set the new currentProp
         currentProp = schema?.[argId] ?? `arg${argId}`;
         break;
+      default:
+        // handle others
+        __set(resultArgs, currentProp, arg);
     }
   }
 

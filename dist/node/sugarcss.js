@@ -8,6 +8,7 @@ import __colorFunction from './visitors/functions/color.js';
 import __scalableFunction from './visitors/functions/scalable.js';
 import __spaceFunction from './visitors/functions/space.js';
 import __mediaRule from './visitors/rules/media.js';
+import __scrollbarRule from './visitors/rules/scrollbar.js';
 import browserslist from 'browserslist';
 import { browserslistToTargets, composeVisitors, } from 'lightningcss';
 import { __parseHtml } from '@lotsof/sugar/console';
@@ -44,6 +45,9 @@ export function sugarize(ligningcss, settings) {
         visitor.push(ligningcss.visitor);
     }
     return {
+        // nonStandard: {
+        //   deepSelectorCombinator: true,
+        // },
         customAtRules: Object.assign(Object.assign({}, ((_a = ligningcss === null || ligningcss === void 0 ? void 0 : ligningcss.customAtRules) !== null && _a !== void 0 ? _a : {})), { mixin: {
                 prelude: '<custom-ident>',
                 body: 'style-block',
@@ -85,21 +89,30 @@ export default function sugarcss(settings = {}) {
                         return __spaceDeclaration(v, finalSettings);
                     case v.name.startsWith(`--${finalSettings.prefix}setting-`):
                         return __settingDeclaration(v, finalSettings);
-                    case v.name === 'padding':
-                        console.log('p', v);
-                        break;
+                    case v.name === 's-scrollbar':
+                        return __scrollbarRule(v, finalSettings);
                 }
             },
         },
         Rule: {
+            unknown(rule) {
+                switch (true) {
+                    case rule.name === 's-scrollbar':
+                        return __scrollbarRule(rule, finalSettings);
+                }
+            },
             custom: {
                 mixin(rule) {
                     mixins.set(rule.prelude.value, rule.body.value);
                     return [];
                 },
                 apply(rule) {
+                    // console.log(JSON.stringify(mixins.get(rule.prelude.value), null, 2));
                     return mixins.get(rule.prelude.value);
                 },
+                // 's-scrollbar'(rule) {
+                //   return __scrollbarRule(rule, finalSettings);
+                // },
             },
             media(rule) {
                 var _a;

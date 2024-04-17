@@ -10,6 +10,7 @@ import __colorFunction from './visitors/functions/color.js';
 import __scalableFunction from './visitors/functions/scalable.js';
 import __spaceFunction from './visitors/functions/space.js';
 import __mediaRule from './visitors/rules/media.js';
+import __scrollbarRule from './visitors/rules/scrollbar.js';
 
 import browserslist from 'browserslist';
 import {
@@ -58,6 +59,9 @@ export function sugarize(
   }
 
   return {
+    // nonStandard: {
+    //   deepSelectorCombinator: true,
+    // },
     customAtRules: {
       ...(ligningcss?.customAtRules ?? {}),
       mixin: {
@@ -67,6 +71,9 @@ export function sugarize(
       apply: {
         prelude: '<custom-ident>',
       },
+      // 's-scrollbar': {
+      //   prelude: '<custom-ident>',
+      // },
     },
     visitor: composeVisitors(visitor),
     targets:
@@ -112,21 +119,30 @@ export default function sugarcss(
             return __spaceDeclaration(v, finalSettings);
           case v.name.startsWith(`--${finalSettings.prefix}setting-`):
             return __settingDeclaration(v, finalSettings);
-          case v.name === 'padding':
-            console.log('p', v);
-            break;
+          case v.name === 's-scrollbar':
+            return __scrollbarRule(v, finalSettings);
         }
       },
     },
     Rule: {
+      unknown(rule) {
+        switch (true) {
+          case rule.name === 's-scrollbar':
+            return __scrollbarRule(rule, finalSettings);
+        }
+      },
       custom: {
         mixin(rule) {
           mixins.set(rule.prelude.value, rule.body.value);
           return [];
         },
         apply(rule) {
+          // console.log(JSON.stringify(mixins.get(rule.prelude.value), null, 2));
           return mixins.get(rule.prelude.value);
         },
+        // 's-scrollbar'(rule) {
+        //   return __scrollbarRule(rule, finalSettings);
+        // },
       },
       media(rule) {
         rule.value.query.mediaQueries?.map((mediaQuery) => {
