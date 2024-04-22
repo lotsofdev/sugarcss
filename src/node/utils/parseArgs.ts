@@ -1,7 +1,8 @@
-import { __set } from '@lotsof/sugar/object';
+import { __get, __set } from '@lotsof/sugar/object';
 
 export interface IParseArgsSettings {
   separator: string | string[];
+  resolve: boolean;
 }
 
 export default function parseArgs(
@@ -11,6 +12,7 @@ export default function parseArgs(
 ): any {
   const finalSettings: IParseArgsSettings = {
     separator: ['comma', 'white-space'],
+    resolve: true,
     ...(settings ?? {}),
   };
 
@@ -29,19 +31,6 @@ export default function parseArgs(
         currentProp = `${currentProp}.${arg.value.replace(/-{1,2}/g, '')}`;
         break;
       case 'token':
-        // case 'length':
-        // when comma, pass to the next arg
-
-        const separators = Array.isArray(finalSettings.separator)
-          ? finalSettings.separator
-          : [finalSettings.separator];
-
-        if (separators.includes(arg.value.type)) {
-          argId++;
-          currentProp = schema?.[argId] ?? `arg${argId}`;
-          continue;
-        }
-
         // some tokens to avoid
         const avoid = [
           'parenthesis-block',
@@ -55,11 +44,21 @@ export default function parseArgs(
           continue;
         }
 
-        let value = arg.value.value;
+        const separators = Array.isArray(finalSettings.separator)
+          ? finalSettings.separator
+          : [finalSettings.separator];
 
-        // if (arg.value.unit) {
-        //   value += arg.value.unit;
-        // }
+        if (separators.includes(arg.value.type)) {
+          argId++;
+          currentProp = schema?.[argId] ?? `arg${argId}`;
+          continue;
+        }
+
+        let value = arg.value;
+
+        if (finalSettings.resolve) {
+          value = value.value;
+        }
 
         // set the value into the resultArgs
         __set(resultArgs, currentProp, value);
@@ -68,6 +67,10 @@ export default function parseArgs(
         currentProp = schema?.[argId] ?? `arg${argId}`;
         break;
       default:
+        if (__get(resultArgs, currentProp)) {
+          continue;
+        }
+
         // handle others
         __set(resultArgs, currentProp, arg);
     }

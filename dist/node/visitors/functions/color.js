@@ -39,6 +39,7 @@ import __parseArgs from '../../utils/parseArgs.js';
 export default function color(value, settings) {
     var _a;
     const args = __parseArgs(value.arguments, ['color', 'modifiers']);
+    console.log(args);
     let color = args.color, modifiers = args.modifiers;
     if (!env.colors[color]) {
         throw new Error(`Color ${color} not found. Please register it first like so: --${settings.prefix}color-${color}: ...;`);

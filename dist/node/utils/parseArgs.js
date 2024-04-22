@@ -1,7 +1,7 @@
-import { __set } from '@lotsof/sugar/object';
+import { __get, __set } from '@lotsof/sugar/object';
 export default function parseArgs(args, schema = [], settings) {
     var _a, _b, _c;
-    const finalSettings = Object.assign({ separator: ['comma', 'white-space'] }, (settings !== null && settings !== void 0 ? settings : {}));
+    const finalSettings = Object.assign({ separator: ['comma', 'white-space'], resolve: true }, (settings !== null && settings !== void 0 ? settings : {}));
     const resultArgs = {};
     let argId = 0, currentProp = (_a = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _a !== void 0 ? _a : `arg${argId}`;
     for (let [i, arg] of args.entries()) {
@@ -14,16 +14,6 @@ export default function parseArgs(args, schema = [], settings) {
                 currentProp = `${currentProp}.${arg.value.replace(/-{1,2}/g, '')}`;
                 break;
             case 'token':
-                // case 'length':
-                // when comma, pass to the next arg
-                const separators = Array.isArray(finalSettings.separator)
-                    ? finalSettings.separator
-                    : [finalSettings.separator];
-                if (separators.includes(arg.value.type)) {
-                    argId++;
-                    currentProp = (_b = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _b !== void 0 ? _b : `arg${argId}`;
-                    continue;
-                }
                 // some tokens to avoid
                 const avoid = [
                     'parenthesis-block',
@@ -36,16 +26,27 @@ export default function parseArgs(args, schema = [], settings) {
                 if (avoid.includes(arg.value.type)) {
                     continue;
                 }
-                let value = arg.value.value;
-                // if (arg.value.unit) {
-                //   value += arg.value.unit;
-                // }
+                const separators = Array.isArray(finalSettings.separator)
+                    ? finalSettings.separator
+                    : [finalSettings.separator];
+                if (separators.includes(arg.value.type)) {
+                    argId++;
+                    currentProp = (_b = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _b !== void 0 ? _b : `arg${argId}`;
+                    continue;
+                }
+                let value = arg.value;
+                if (finalSettings.resolve) {
+                    value = value.value;
+                }
                 // set the value into the resultArgs
                 __set(resultArgs, currentProp, value);
                 // set the new currentProp
                 currentProp = (_c = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _c !== void 0 ? _c : `arg${argId}`;
                 break;
             default:
+                if (__get(resultArgs, currentProp)) {
+                    continue;
+                }
                 // handle others
                 __set(resultArgs, currentProp, arg);
         }

@@ -41,6 +41,8 @@ import __parseArgs from '../../utils/parseArgs.js';
 export default function color(value: any, settings: ISugarCssSettings): any {
   const args = __parseArgs(value.arguments, ['color', 'modifiers']);
 
+  console.log(args);
+
   let color = args.color,
     modifiers = args.modifiers;
 
