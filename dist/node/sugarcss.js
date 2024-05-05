@@ -6,13 +6,13 @@ import __settingDeclaration from './visitors/declarations/setting.js';
 import __shadeDeclaration from './visitors/declarations/shade.js';
 import __sizeDeclaration from './visitors/declarations/size.js';
 import __spaceDeclaration from './visitors/declarations/space.js';
-import __typoDeclaration from './visitors/declarations/typo.js';
+import __fontDeclaration from './visitors/declarations/font.js';
 import __colorFunction from './visitors/functions/color.js';
 import __fontFamilyFunction from './visitors/functions/fontFamily.js';
 import __scalableFunction from './visitors/functions/scalable.js';
 import __sizeFunction from './visitors/functions/size.js';
 import __spaceFunction from './visitors/functions/space.js';
-import __typoFunction from './visitors/functions/typo.js';
+import __fontFunction from './visitors/functions/font.js';
 import __mediaRule from './visitors/rules/media.js';
 import __scrollbarRule from './visitors/rules/scrollbar.js';
 import browserslist from 'browserslist';
@@ -42,8 +42,8 @@ export const env = {
     },
     fonts: {
         family: {},
+        fonts: {},
     },
-    typos: {},
 };
 const nativeConsoleLog = console.log;
 console.log = (...args) => {
@@ -82,7 +82,7 @@ export default function sugarcss(settings = {}) {
     env.functions[`${finalSettings.prefix}scalable`] = __scalableFunction;
     env.functions[`${finalSettings.prefix}size`] = __sizeFunction;
     env.functions[`${finalSettings.prefix}space`] = __spaceFunction;
-    env.functions[`${finalSettings.prefix}typo`] = __typoFunction;
+    env.functions[`${finalSettings.prefix}font`] = __fontFunction;
     let mixins = new Map();
     const visitors = {
         Function: {
@@ -101,8 +101,8 @@ export default function sugarcss(settings = {}) {
             [`${finalSettings.prefix}font-family`](v) {
                 return __fontFamilyFunction(v, finalSettings);
             },
-            [`${finalSettings.prefix}typo`](v) {
-                return __typoFunction(v, finalSettings);
+            [`${finalSettings.prefix}font`](v) {
+                return __fontFunction(v, finalSettings);
             },
         },
         Declaration: {
@@ -122,8 +122,9 @@ export default function sugarcss(settings = {}) {
                         return __sizeDeclaration(v, finalSettings);
                     case v.name.startsWith(`--${finalSettings.prefix}setting-`):
                         return __settingDeclaration(v, finalSettings);
-                    case v.name.startsWith(`--${finalSettings.prefix}typo-`):
-                        return __typoDeclaration(v, finalSettings);
+                    case v.name.startsWith(`--${finalSettings.prefix}font-`) &&
+                        !v.name.startsWith(`--${finalSettings.prefix}font-family-`):
+                        return __fontDeclaration(v, finalSettings);
                     case v.name.startsWith(`--${finalSettings.prefix}font-family-`):
                         return __fontFamilyDeclaration(v, finalSettings);
                     case v.name === 's-scrollbar':

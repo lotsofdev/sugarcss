@@ -11,10 +11,9 @@ export interface ISugarCssEnv {
   spaces: ISugarCssSpace;
   sizes: ISugarCssSize;
   fonts: ISugarCssFonts;
-  typos: Record<string, ISugarCssTypo>;
 }
 
-export interface ISugarCssTypo {
+export interface ISugarCssFontsFonts {
   family: string;
   size: number;
   lineHeight: number;
@@ -33,6 +32,7 @@ export interface ISugarCssSettings {
 
 export interface ISugarCssFonts {
   family: Record<string, string[]>;
+  fonts: Record<string, ISugarCssFontsFonts>;
 }
 
 export interface ISugarCssSpace {

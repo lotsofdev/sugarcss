@@ -1,9 +1,9 @@
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types';
+import { ISugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
-export default function typo(v, settings: ISugarCssSettings): any {
-  const typo = v.name.replace(`--${settings.prefix}typo-`, '');
+export default function font(v, settings: ISugarCssSettings): any {
+  const name = v.name.replace(`--${settings.prefix}font-`, '');
   const args = __parseArgs(
     v.value,
     ['family', 'size', 'lineHeight', 'weight', 'style', 'variant', 'stretch'],
@@ -12,12 +12,12 @@ export default function typo(v, settings: ISugarCssSettings): any {
     },
   );
 
-  env.typos[typo] = args;
+  env.fonts.fonts[name] = args;
 
   if (settings.verbose) {
     console.log(
-      `Registered typo: <cyan>${typo}</cyan>: <yellow>${JSON.stringify(
-        env.typos[typo],
+      `Registered name: <cyan>${name}</cyan>: <yellow>${JSON.stringify(
+        env.fonts.fonts[name],
         null,
       )}</yellow>`,
     );
