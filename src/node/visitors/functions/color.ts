@@ -39,16 +39,22 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 export default function color(value: any, settings: ISugarCssSettings): any {
-  const args = __parseArgs(value.arguments, ['color', 'modifiers']);
-
-  console.log(args);
+  const args = __parseArgs(value.arguments, ['color', 'modifiers']),
+    availableModifiers = [
+      'lighten',
+      'darken',
+      'saturate',
+      'desaturate',
+      'spin',
+      'alpha',
+    ];
 
   let color = args.color,
     modifiers = args.modifiers;
 
   if (!env.colors[color]) {
     throw new Error(
-      `Color ${color} not found. Please register it first like so: --${settings.prefix}color-${color}: ...;`,
+      `Color "${color}" not found. Please register it first like so: --${settings.prefix}color-${color}: ...;`,
     );
   }
 
@@ -61,7 +67,22 @@ export default function color(value: any, settings: ISugarCssSettings): any {
     modifiers = env.shades[`${modifiers}-${color}`] ?? env.shades[modifiers];
   }
 
+  if (color === 'coco') {
+    console.log('MOD', color, modifiers);
+  }
+
   if (modifiers) {
+    // check modifiers
+    for (let [mod, val] of Object.entries(modifiers)) {
+      if (!availableModifiers.includes(mod)) {
+        throw new Error(
+          `The requested "${mod}" color modifier is invalid. Here's the available ones: ${availableModifiers.join(
+            ',',
+          )}`,
+        );
+      }
+    }
+
     let lModifier = modifiers.darken
         ? ` - ${modifiers.darken}`
         : modifiers.lighten
@@ -73,6 +94,10 @@ export default function color(value: any, settings: ISugarCssSettings): any {
         ? ` - ${modifiers.desaturate}`
         : '',
       spin = modifiers.spin ? `+ ${modifiers.spin}` : '';
+
+    if (color === 'coco') {
+      console.log(lModifier);
+    }
 
     return {
       raw: [

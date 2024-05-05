@@ -8,8 +8,6 @@ export default function share(v, settings: ISugarCssSettings): any {
   const args = __parseArgs(v.value, ['modifiers']);
   env.shades[shade] = args.modifiers;
 
-  console.log(args);
-
   if (settings.verbose) {
     console.log(
       `Registered shade: <cyan>${shade}</cyan>: <yellow>${JSON.stringify(

@@ -12,8 +12,8 @@ export default function media(v, settings: ISugarCssSettings): any {
     env.medias[media] = {};
   }
 
-  env.medias[media].min = args.min?.value?.value ?? 0;
-  env.medias[media].max = args.max?.value?.value ?? 0;
+  env.medias[media].min = args.min ?? 0;
+  env.medias[media].max = args.max ?? 0;
 
   if (settings.verbose) {
     console.log(

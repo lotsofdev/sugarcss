@@ -1,18 +1,25 @@
 import __colorDeclaration from './visitors/declarations/color.js';
 import __easingsDeclaration from './visitors/declarations/easing.js';
+import __fontFamilyDeclaration from './visitors/declarations/fontFamily.js';
 import __mediaDeclaration from './visitors/declarations/media.js';
 import __settingDeclaration from './visitors/declarations/setting.js';
 import __shadeDeclaration from './visitors/declarations/shade.js';
+import __sizeDeclaration from './visitors/declarations/size.js';
 import __spaceDeclaration from './visitors/declarations/space.js';
+import __typoDeclaration from './visitors/declarations/typo.js';
 import __colorFunction from './visitors/functions/color.js';
+import __fontFamilyFunction from './visitors/functions/fontFamily.js';
 import __scalableFunction from './visitors/functions/scalable.js';
+import __sizeFunction from './visitors/functions/size.js';
 import __spaceFunction from './visitors/functions/space.js';
+import __typoFunction from './visitors/functions/typo.js';
 import __mediaRule from './visitors/rules/media.js';
 import __scrollbarRule from './visitors/rules/scrollbar.js';
 import browserslist from 'browserslist';
 import { browserslistToTargets, composeVisitors, } from 'lightningcss';
 import { __parseHtml } from '@lotsof/sugar/console';
 export const env = {
+    functions: {},
     settings: {
         prefix: 's-',
         verbose: true,
@@ -28,6 +35,15 @@ export const env = {
         min: 0,
         max: 100,
     },
+    sizes: {
+        easing: 'linear',
+        min: 0,
+        max: 100,
+    },
+    fonts: {
+        family: {},
+    },
+    typos: {},
 };
 const nativeConsoleLog = console.log;
 console.log = (...args) => {
@@ -61,6 +77,12 @@ export function sugarize(ligningcss, settings) {
 export default function sugarcss(settings = {}) {
     const finalSettings = Object.assign(Object.assign({}, env.settings), settings);
     env.settings = finalSettings;
+    env.functions[`${finalSettings.prefix}color`] = __colorFunction;
+    env.functions[`${finalSettings.prefix}font-family`] = __fontFamilyFunction;
+    env.functions[`${finalSettings.prefix}scalable`] = __scalableFunction;
+    env.functions[`${finalSettings.prefix}size`] = __sizeFunction;
+    env.functions[`${finalSettings.prefix}space`] = __spaceFunction;
+    env.functions[`${finalSettings.prefix}typo`] = __typoFunction;
     let mixins = new Map();
     const visitors = {
         Function: {
@@ -72,6 +94,15 @@ export default function sugarcss(settings = {}) {
             },
             [`${finalSettings.prefix}space`](v) {
                 return __spaceFunction(v, finalSettings);
+            },
+            [`${finalSettings.prefix}size`](v) {
+                return __sizeFunction(v, finalSettings);
+            },
+            [`${finalSettings.prefix}font-family`](v) {
+                return __fontFamilyFunction(v, finalSettings);
+            },
+            [`${finalSettings.prefix}typo`](v) {
+                return __typoFunction(v, finalSettings);
             },
         },
         Declaration: {
@@ -87,8 +118,14 @@ export default function sugarcss(settings = {}) {
                         return __easingsDeclaration(v, finalSettings);
                     case v.name.startsWith(`--${finalSettings.prefix}space-`):
                         return __spaceDeclaration(v, finalSettings);
+                    case v.name.startsWith(`--${finalSettings.prefix}size-`):
+                        return __sizeDeclaration(v, finalSettings);
                     case v.name.startsWith(`--${finalSettings.prefix}setting-`):
                         return __settingDeclaration(v, finalSettings);
+                    case v.name.startsWith(`--${finalSettings.prefix}typo-`):
+                        return __typoDeclaration(v, finalSettings);
+                    case v.name.startsWith(`--${finalSettings.prefix}font-family-`):
+                        return __fontFamilyDeclaration(v, finalSettings);
                     case v.name === 's-scrollbar':
                         return __scrollbarRule(v, finalSettings);
                 }

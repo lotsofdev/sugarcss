@@ -1,4 +1,5 @@
 import { __get, __set } from '@lotsof/sugar/object';
+import { env } from '../sugarcss.js';
 
 export interface IParseArgsSettings {
   separator: string | string[];
@@ -19,16 +20,34 @@ export default function parseArgs(
   const resultArgs = {};
 
   let argId = 0,
+    value,
     currentProp = schema?.[argId] ?? `arg${argId}`;
 
   for (let [i, arg] of args.entries()) {
     switch (arg.type) {
       case 'dashed-ident':
         // handle dashed ident like (--darken 10) etc...
-        if (!resultArgs[currentProp]) {
+        if (resultArgs[currentProp] === undefined) {
           resultArgs[currentProp] = {};
+          currentProp = `${currentProp}.${arg.value.replace(/-{1,2}/g, '')}`;
+        } else {
+          currentProp = arg.value.replace(/-{1,2}/g, '');
         }
-        currentProp = `${currentProp}.${arg.value.replace(/-{1,2}/g, '')}`;
+        break;
+      case 'function':
+        if (env.functions[arg.value.name]) {
+          const v = env.functions[arg.value.name](arg.value);
+
+          // set the value into the resultArgs
+          __set(resultArgs, currentProp, v.raw ?? v);
+
+          // pass to next arg
+          argId++;
+
+          // set the new currentProp
+          currentProp = schema?.[argId] ?? `arg${argId}`;
+        }
+
         break;
       case 'token':
         // some tokens to avoid
@@ -49,19 +68,27 @@ export default function parseArgs(
           : [finalSettings.separator];
 
         if (separators.includes(arg.value.type)) {
-          argId++;
           currentProp = schema?.[argId] ?? `arg${argId}`;
           continue;
         }
 
-        let value = arg.value;
+        // get the value
+        value = arg.value;
 
-        if (finalSettings.resolve) {
+        // handle "resolve" setting
+        if (
+          finalSettings.resolve === true ||
+          (Array.isArray(finalSettings.resolve) &&
+            finalSettings.resolve?.includes(currentProp))
+        ) {
           value = value.value;
         }
 
         // set the value into the resultArgs
         __set(resultArgs, currentProp, value);
+
+        // pass to next arg
+        argId++;
 
         // set the new currentProp
         currentProp = schema?.[argId] ?? `arg${argId}`;
@@ -71,8 +98,26 @@ export default function parseArgs(
           continue;
         }
 
+        // get the value
+        value = arg.value;
+
+        // handle "resolve" setting
+        if (
+          finalSettings.resolve === true ||
+          (Array.isArray(finalSettings.resolve) &&
+            finalSettings.resolve?.includes(currentProp))
+        ) {
+          value = value.value;
+        }
+
         // handle others
-        __set(resultArgs, currentProp, arg);
+        __set(resultArgs, currentProp, value);
+
+        // pass to next arg
+        argId++;
+
+        // set the new currentProp
+        currentProp = schema?.[argId] ?? `arg${argId}`;
     }
   }
 

@@ -2,13 +2,13 @@ import { env } from '../../sugarcss.js';
 import { ISugarCssSettings } from '../../sugarcss.types';
 import __parseArgs from '../../utils/parseArgs.js';
 
-export default function space(v, settings: ISugarCssSettings): any {
-  const name = v.name.replace(`--${settings.prefix}space-`, ''),
+export default function size(v, settings: ISugarCssSettings): any {
+  const name = v.name.replace(`--${settings.prefix}size-`, ''),
     validArgs = ['easing', 'min', 'max'];
 
   if (!validArgs.includes(name)) {
     throw new Error(
-      `Invalid space argument: ${name}. Valid arguments are: ${validArgs.join(
+      `Invalid size argument: ${name}. Valid arguments are: ${validArgs.join(
         ', ',
       )}`,
     );
@@ -20,11 +20,11 @@ export default function space(v, settings: ISugarCssSettings): any {
 
   let value = args[name];
 
-  env.spaces[name] = value;
+  env.sizes[name] = value;
 
   if (settings.verbose) {
     console.log(
-      `Registered space argument: <cyan>${name}</cyan>: <yellow>${JSON.stringify(
+      `Registered size argument: <cyan>${name}</cyan>: <yellow>${JSON.stringify(
         env.spaces[name],
       )}</yellow>`,
     );

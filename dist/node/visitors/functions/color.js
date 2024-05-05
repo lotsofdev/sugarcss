@@ -38,11 +38,17 @@ import __parseArgs from '../../utils/parseArgs.js';
  */
 export default function color(value, settings) {
     var _a;
-    const args = __parseArgs(value.arguments, ['color', 'modifiers']);
-    console.log(args);
+    const args = __parseArgs(value.arguments, ['color', 'modifiers']), availableModifiers = [
+        'lighten',
+        'darken',
+        'saturate',
+        'desaturate',
+        'spin',
+        'alpha',
+    ];
     let color = args.color, modifiers = args.modifiers;
     if (!env.colors[color]) {
-        throw new Error(`Color ${color} not found. Please register it first like so: --${settings.prefix}color-${color}: ...;`);
+        throw new Error(`Color "${color}" not found. Please register it first like so: --${settings.prefix}color-${color}: ...;`);
     }
     if (typeof modifiers === 'string') {
         if (!env.shades[`${modifiers}-${color}`] && !env.shades[modifiers]) {
@@ -50,7 +56,16 @@ export default function color(value, settings) {
         }
         modifiers = (_a = env.shades[`${modifiers}-${color}`]) !== null && _a !== void 0 ? _a : env.shades[modifiers];
     }
+    if (color === 'coco') {
+        console.log('MOD', color, modifiers);
+    }
     if (modifiers) {
+        // check modifiers
+        for (let [mod, val] of Object.entries(modifiers)) {
+            if (!availableModifiers.includes(mod)) {
+                throw new Error(`The requested "${mod}" color modifier is invalid. Here's the available ones: ${availableModifiers.join(',')}`);
+            }
+        }
         let lModifier = modifiers.darken
             ? ` - ${modifiers.darken}`
             : modifiers.lighten
@@ -60,6 +75,9 @@ export default function color(value, settings) {
             : modifiers.desaturate
                 ? ` - ${modifiers.desaturate}`
                 : '', spin = modifiers.spin ? `+ ${modifiers.spin}` : '';
+        if (color === 'coco') {
+            console.log(lModifier);
+        }
         return {
             raw: [
                 `hsla(`,
