@@ -61,7 +61,7 @@ console.log = (...args): void => {
     if (typeof arg === 'string') {
       arg = __parseHtml(arg);
     }
-    nativeConsoleLog(arg);
+    // nativeConsoleLog(arg);
   });
 };
 
