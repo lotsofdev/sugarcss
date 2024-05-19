@@ -1,6 +1,6 @@
 import { __camelCase, __parse } from '@lotsof/sugar/string';
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types';
+import { ISugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 export default function setting(v, settings: ISugarCssSettings): any {

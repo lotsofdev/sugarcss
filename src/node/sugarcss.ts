@@ -1,20 +1,20 @@
-import { ISugarCssEnv, ISugarCssSettings } from './sugarcss.types';
+import { ISugarCssEnv, ISugarCssSettings } from './sugarcss.types.js';
 
 import __colorDeclaration from './visitors/declarations/color.js';
 import __easingsDeclaration from './visitors/declarations/easing.js';
+import __fontDeclaration from './visitors/declarations/font.js';
 import __fontFamilyDeclaration from './visitors/declarations/fontFamily.js';
 import __mediaDeclaration from './visitors/declarations/media.js';
 import __settingDeclaration from './visitors/declarations/setting.js';
 import __shadeDeclaration from './visitors/declarations/shade.js';
 import __sizeDeclaration from './visitors/declarations/size.js';
 import __spaceDeclaration from './visitors/declarations/space.js';
-import __fontDeclaration from './visitors/declarations/font.js';
 import __colorFunction from './visitors/functions/color.js';
+import __fontFunction from './visitors/functions/font.js';
 import __fontFamilyFunction from './visitors/functions/fontFamily.js';
 import __scalableFunction from './visitors/functions/scalable.js';
 import __sizeFunction from './visitors/functions/size.js';
 import __spaceFunction from './visitors/functions/space.js';
-import __fontFunction from './visitors/functions/font.js';
 import __mediaRule from './visitors/rules/media.js';
 import __scrollbarRule from './visitors/rules/scrollbar.js';
 
