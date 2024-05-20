@@ -1,9 +1,16 @@
 import { __get, __set } from '@lotsof/sugar/object';
 import { env } from '../sugarcss.js';
+import __toString from './toString.js';
 export default function parseArgs(args, schema = [], settings) {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f;
     const finalSettings = Object.assign({ separator: ['comma', 'white-space'], resolve: true }, (settings !== null && settings !== void 0 ? settings : {}));
     const resultArgs = {};
+    function needResolve(prop) {
+        var _a;
+        return (finalSettings.resolve === true ||
+            (Array.isArray(finalSettings.resolve) &&
+                ((_a = finalSettings.resolve) === null || _a === void 0 ? void 0 : _a.includes(prop))));
+    }
     let argId = 0, value, currentProp = (_a = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _a !== void 0 ? _a : `arg${argId}`;
     for (let [i, arg] of args.entries()) {
         switch (arg.type) {
@@ -18,7 +25,16 @@ export default function parseArgs(args, schema = [], settings) {
                 }
                 break;
             case 'function':
-                if (env.functions[arg.value.name]) {
+                if (arg.value.name === 'cubic-bezier') {
+                    if (needResolve(currentProp)) {
+                        const easing = __toString(arg);
+                        __set(resultArgs, currentProp, easing);
+                    }
+                    else {
+                        __set(resultArgs, currentProp, arg.value);
+                    }
+                }
+                else if (env.functions[arg.value.name]) {
                     const v = env.functions[arg.value.name](arg.value);
                     // set the value into the resultArgs
                     __set(resultArgs, currentProp, (_b = v.raw) !== null && _b !== void 0 ? _b : v);
@@ -51,9 +67,7 @@ export default function parseArgs(args, schema = [], settings) {
                 // get the value
                 value = arg.value;
                 // handle "resolve" setting
-                if (finalSettings.resolve === true ||
-                    (Array.isArray(finalSettings.resolve) &&
-                        ((_e = finalSettings.resolve) === null || _e === void 0 ? void 0 : _e.includes(currentProp)))) {
+                if (needResolve(currentProp)) {
                     value = value.value;
                 }
                 // set the value into the resultArgs
@@ -61,7 +75,7 @@ export default function parseArgs(args, schema = [], settings) {
                 // pass to next arg
                 argId++;
                 // set the new currentProp
-                currentProp = (_f = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _f !== void 0 ? _f : `arg${argId}`;
+                currentProp = (_e = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _e !== void 0 ? _e : `arg${argId}`;
                 break;
             default:
                 if (__get(resultArgs, currentProp)) {
@@ -70,9 +84,7 @@ export default function parseArgs(args, schema = [], settings) {
                 // get the value
                 value = arg.value;
                 // handle "resolve" setting
-                if (finalSettings.resolve === true ||
-                    (Array.isArray(finalSettings.resolve) &&
-                        ((_g = finalSettings.resolve) === null || _g === void 0 ? void 0 : _g.includes(currentProp)))) {
+                if (needResolve(currentProp)) {
                     value = value.value;
                 }
                 // handle others
@@ -80,7 +92,7 @@ export default function parseArgs(args, schema = [], settings) {
                 // pass to next arg
                 argId++;
                 // set the new currentProp
-                currentProp = (_h = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _h !== void 0 ? _h : `arg${argId}`;
+                currentProp = (_f = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _f !== void 0 ? _f : `arg${argId}`;
         }
     }
     return resultArgs;

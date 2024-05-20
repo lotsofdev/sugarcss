@@ -5,8 +5,6 @@ import { __convert } from '@lotsof/sugar/color';
 
 export default function color(v, settings: ISugarCssSettings): any {
   const name = v.name.replace(`--${settings.prefix}color-`, '');
-  const hslaColor = __convert(v.value[0]?.value ?? v.value[0], 'hsla');
-  env.colors[name] = hslaColor;
 
   const result: any[] = [
     {
@@ -17,6 +15,14 @@ export default function color(v, settings: ISugarCssSettings): any {
       },
     },
   ];
+
+  // // avoid overriding initial registered colors
+  // if (env.colors[name]) {
+  //   return result;
+  // }
+
+  const hslaColor = __convert(v.value[0]?.value ?? v.value[0], 'hsla');
+  env.colors[name] = hslaColor;
 
   ['h', 's', 'l', 'a'].forEach((key) => {
     result.push({

@@ -1,3 +1,4 @@
+import __ensureFontFamilyExists from '../../ensure/fontFamilyExists.js';
 import { env } from '../../sugarcss.js';
 import { ISugarCssSettings } from '../../sugarcss.types';
 import __parseArgs from '../../utils/parseArgs.js';
@@ -12,16 +13,8 @@ export default function fontFamily(
 
   const fontFamilyArgs = env.fonts.family;
 
-  // protect against invalid easings
-  if (!fontFamilyArgs[args.name]) {
-    throw new Error(
-      `Invalid font family: ${
-        args.name
-      }. Valid font families are: ${Object.keys(
-        Object.keys(env.fonts.family),
-      ).join(', ')}`,
-    );
-  }
+  // protect against invalid fonts
+  __ensureFontFamilyExists(args.name);
 
   const families = fontFamilyArgs[args.name];
 

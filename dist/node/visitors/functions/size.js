@@ -1,5 +1,6 @@
 import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
+import __ensureEasingExists from '../../ensure/easingExists.js';
 export default function size(value, settings) {
     const args = __parseArgs(value.arguments, [], {
         separator: ['white-space', 'comma'],
@@ -15,9 +16,7 @@ export default function size(value, settings) {
         }
     }
     // protect against invalid easings
-    if (!env.easings[sizeArgs.easing]) {
-        throw new Error(`Invalid easing: ${sizeArgs.easing}. Valid easings are: ${Object.keys(env.easings).join(', ')}`);
-    }
+    __ensureEasingExists(sizeArgs.easing);
     // prepare the easing function
     const easingFunction = env.easings[easing];
     // calculate the delta between min and max

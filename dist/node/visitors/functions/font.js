@@ -1,14 +1,13 @@
 import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
+import __ensureFontExists from '../../ensure/fontExists.js';
 export default function font(value, settings) {
     var _a, _b, _c, _d, _e;
     const args = __parseArgs(value.arguments, ['name'], {
         separator: ['white-space', 'comma'],
     });
     const fontsArgs = env.fonts.fonts;
-    if (!fontsArgs[args.name]) {
-        throw new Error(`The requested "${args.name}" font is not available. Here's the registered ones: ${Object.keys(env.fonts.fonts).join(',')}`);
-    }
+    __ensureFontExists(args.name);
     const fontArgs = fontsArgs[args.name];
     // size and line-height
     let size = '1em', lineHeight = '1em';

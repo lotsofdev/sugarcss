@@ -4,8 +4,6 @@ import __parseArgs from '../../utils/parseArgs.js';
 export default function scalable(value: any, settings: ISugarCssSettings): any {
   const args = __parseArgs(value.arguments);
 
-  console.log(value);
-
   const result = {
     raw: '',
   };

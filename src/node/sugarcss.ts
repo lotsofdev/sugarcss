@@ -2,21 +2,24 @@ import { ISugarCssEnv, ISugarCssSettings } from './sugarcss.types';
 
 import __colorDeclaration from './visitors/declarations/color.js';
 import __easingsDeclaration from './visitors/declarations/easing.js';
+import __fontDeclaration from './visitors/declarations/font.js';
 import __fontFamilyDeclaration from './visitors/declarations/fontFamily.js';
 import __mediaDeclaration from './visitors/declarations/media.js';
 import __settingDeclaration from './visitors/declarations/setting.js';
 import __shadeDeclaration from './visitors/declarations/shade.js';
 import __sizeDeclaration from './visitors/declarations/size.js';
 import __spaceDeclaration from './visitors/declarations/space.js';
-import __fontDeclaration from './visitors/declarations/font.js';
+import __transitionDeclaration from './visitors/declarations/transition.js';
 import __colorFunction from './visitors/functions/color.js';
+import __fontFunction from './visitors/functions/font.js';
 import __fontFamilyFunction from './visitors/functions/fontFamily.js';
 import __scalableFunction from './visitors/functions/scalable.js';
 import __sizeFunction from './visitors/functions/size.js';
 import __spaceFunction from './visitors/functions/space.js';
-import __fontFunction from './visitors/functions/font.js';
+import __transitionFunction from './visitors/functions/transition.js';
 import __mediaRule from './visitors/rules/media.js';
 import __scrollbarRule from './visitors/rules/scrollbar.js';
+import __transitionRule from './visitors/rules/transition.js';
 
 import browserslist from 'browserslist';
 import {
@@ -38,6 +41,7 @@ export const env: ISugarCssEnv = {
   colors: {},
   shades: {},
   easings: {},
+  transitions: {},
   medias: {},
   spaces: {
     easing: 'linear',
@@ -122,6 +126,7 @@ export default function sugarcss(
   env.functions[`${finalSettings.prefix}size`] = __sizeFunction;
   env.functions[`${finalSettings.prefix}space`] = __spaceFunction;
   env.functions[`${finalSettings.prefix}font`] = __fontFunction;
+  env.functions[`${finalSettings.prefix}transition`] = __transitionFunction;
 
   let mixins = new Map();
 
@@ -145,9 +150,15 @@ export default function sugarcss(
       [`${finalSettings.prefix}font`](v) {
         return __fontFunction(v, finalSettings);
       },
+      [`${finalSettings.prefix}transition`](v) {
+        return __transitionFunction(v, finalSettings);
+      },
     },
     Declaration: {
       custom(v) {
+        if (v.name === 'custom') {
+          console.log(JSON.stringify(v, null, 4));
+        }
         switch (true) {
           case v.name.startsWith(`--${finalSettings.prefix}color-`):
             return __colorDeclaration(v, finalSettings);
@@ -168,16 +179,18 @@ export default function sugarcss(
             return __fontDeclaration(v, finalSettings);
           case v.name.startsWith(`--${finalSettings.prefix}font-family-`):
             return __fontFamilyDeclaration(v, finalSettings);
-          case v.name === 's-scrollbar':
-            return __scrollbarRule(v, finalSettings);
+          case v.name.startsWith(`--${finalSettings.prefix}transition-`):
+            return __transitionDeclaration(v, finalSettings);
         }
       },
     },
     Rule: {
       unknown(rule) {
         switch (true) {
-          case rule.name === 's-scrollbar':
+          case rule.name === `${finalSettings.prefix}scrollbar`:
             return __scrollbarRule(rule, finalSettings);
+          case rule.name === `${finalSettings.prefix}transition`:
+            return __transitionRule(rule, finalSettings);
         }
       },
       custom: {

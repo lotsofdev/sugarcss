@@ -1,7 +1,6 @@
 import __parseArgs from '../../utils/parseArgs.js';
 export default function scalable(value, settings) {
     const args = __parseArgs(value.arguments);
-    console.log(value);
     const result = {
         raw: '',
     };

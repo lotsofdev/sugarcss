@@ -1,9 +1,11 @@
 import { __get, __set } from '@lotsof/sugar/object';
 import { env } from '../sugarcss.js';
+import __toString from './toString.js';
 
 export interface IParseArgsSettings {
   separator: string | string[];
   resolve: boolean;
+  defaults: Record<string, any>;
 }
 
 export default function parseArgs(
@@ -18,6 +20,14 @@ export default function parseArgs(
   };
 
   const resultArgs = {};
+
+  function needResolve(prop: string) {
+    return (
+      finalSettings.resolve === true ||
+      (Array.isArray(finalSettings.resolve) &&
+        finalSettings.resolve?.includes(prop))
+    );
+  }
 
   let argId = 0,
     value,
@@ -35,9 +45,15 @@ export default function parseArgs(
         }
         break;
       case 'function':
-        if (env.functions[arg.value.name]) {
+        if (arg.value.name === 'cubic-bezier') {
+          if (needResolve(currentProp)) {
+            const easing = __toString(arg);
+            __set(resultArgs, currentProp, easing);
+          } else {
+            __set(resultArgs, currentProp, arg.value);
+          }
+        } else if (env.functions[arg.value.name]) {
           const v = env.functions[arg.value.name](arg.value);
-
           // set the value into the resultArgs
           __set(resultArgs, currentProp, v.raw ?? v);
 
@@ -76,11 +92,7 @@ export default function parseArgs(
         value = arg.value;
 
         // handle "resolve" setting
-        if (
-          finalSettings.resolve === true ||
-          (Array.isArray(finalSettings.resolve) &&
-            finalSettings.resolve?.includes(currentProp))
-        ) {
+        if (needResolve(currentProp)) {
           value = value.value;
         }
 
@@ -102,11 +114,7 @@ export default function parseArgs(
         value = arg.value;
 
         // handle "resolve" setting
-        if (
-          finalSettings.resolve === true ||
-          (Array.isArray(finalSettings.resolve) &&
-            finalSettings.resolve?.includes(currentProp))
-        ) {
+        if (needResolve(currentProp)) {
           value = value.value;
         }
 

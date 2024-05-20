@@ -1,3 +1,4 @@
+import __ensureEasingExists from '../../ensure/easingExists.js';
 import { env } from '../../sugarcss.js';
 import { ISugarCssSettings } from '../../sugarcss.types';
 import __parseArgs from '../../utils/parseArgs.js';
@@ -21,13 +22,7 @@ export default function space(value: any, settings: ISugarCssSettings): any {
   }
 
   // protect against invalid easings
-  if (!env.easings[spaceArgs.easing]) {
-    throw new Error(
-      `Invalid easing: ${spaceArgs.easing}. Valid easings are: ${Object.keys(
-        env.easings,
-      ).join(', ')}`,
-    );
-  }
+  __ensureEasingExists(spaceArgs.easing);
 
   // prepare the easing function
   const easingFunction = env.easings[easing];
