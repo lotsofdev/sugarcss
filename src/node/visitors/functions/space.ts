@@ -1,6 +1,6 @@
 import __ensureEasingExists from '../../ensure/easingExists.js';
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types';
+import { ISugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 export default function space(value: any, settings: ISugarCssSettings): any {

@@ -55,7 +55,7 @@ console.log = (...args) => {
         if (typeof arg === 'string') {
             arg = __parseHtml(arg);
         }
-        nativeConsoleLog(arg);
+        // nativeConsoleLog(arg);
     });
 };
 export function sugarize(ligningcss, settings) {

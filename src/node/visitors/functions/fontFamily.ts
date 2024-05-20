@@ -1,6 +1,6 @@
 import __ensureFontFamilyExists from '../../ensure/fontFamilyExists.js';
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types';
+import { ISugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 export default function fontFamily(

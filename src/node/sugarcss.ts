@@ -1,4 +1,4 @@
-import { ISugarCssEnv, ISugarCssSettings } from './sugarcss.types';
+import { ISugarCssEnv, ISugarCssSettings } from './sugarcss.types.js';
 
 import __colorDeclaration from './visitors/declarations/color.js';
 import __easingsDeclaration from './visitors/declarations/easing.js';
@@ -65,7 +65,7 @@ console.log = (...args): void => {
     if (typeof arg === 'string') {
       arg = __parseHtml(arg);
     }
-    nativeConsoleLog(arg);
+    // nativeConsoleLog(arg);
   });
 };
 
