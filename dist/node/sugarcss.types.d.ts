@@ -5,12 +5,21 @@ export interface ISugarCssEnv {
     colors: Record<string, any>;
     shades: Record<string, ISugarCssShade>;
     easings: Record<string, ISugarCssEasing>;
+    transitions: Record<string, ISugarCssTransition>;
     medias: Record<string, ISugarCssMedia>;
     spaces: ISugarCssSpace;
     sizes: ISugarCssSize;
     fonts: ISugarCssFonts;
 }
-export interface ISugarCssFontsFonts {
+export interface ISugarCssTransition {
+    property: string;
+    duration: string;
+    easing: string;
+    delay: string;
+    behavior: string;
+    ast: any;
+}
+export interface ISugarCssFontsFont {
     family: string;
     size: number;
     lineHeight: number;
@@ -27,7 +36,7 @@ export interface ISugarCssSettings {
 }
 export interface ISugarCssFonts {
     family: Record<string, string[]>;
-    fonts: Record<string, ISugarCssFontsFonts>;
+    fonts: Record<string, ISugarCssFontsFont>;
 }
 export interface ISugarCssSpace {
     easing: string;
