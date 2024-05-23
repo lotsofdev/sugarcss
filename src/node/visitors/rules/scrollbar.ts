@@ -42,9 +42,13 @@ export default function scrollbar(v: any, settings: ISugarCssSettings): any {
   // parse args
   const args = __parseArgs(v.prelude);
 
-  if (args.arg0 === 'hide') {
+  if (args.values.arg0 === 'hide') {
     return __hideAst();
   } else {
-    return __scrollbarAst(args.arg0, args.arg1.value, args.arg2.value);
+    return __scrollbarAst(
+      args.values.arg0,
+      args.values.arg1.value,
+      args.values.arg2.value,
+    );
   }
 }

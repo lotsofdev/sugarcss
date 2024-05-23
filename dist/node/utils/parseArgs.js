@@ -1,17 +1,12 @@
 import { __get, __set } from '@lotsof/sugar/object';
 import { env } from '../sugarcss.js';
 import __toString from './toString.js';
+import __parsedArgsToRawValues from './parsedArgsToRawValues.js';
 export default function parseArgs(args, schema = [], settings) {
     var _a, _b, _c, _d, _e, _f;
     const finalSettings = Object.assign({ separator: ['comma', 'white-space'], resolve: true }, (settings !== null && settings !== void 0 ? settings : {}));
     const resultArgs = {};
-    function needResolve(prop) {
-        var _a;
-        return (finalSettings.resolve === true ||
-            (Array.isArray(finalSettings.resolve) &&
-                ((_a = finalSettings.resolve) === null || _a === void 0 ? void 0 : _a.includes(prop))));
-    }
-    let argId = 0, value, currentProp = (_a = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _a !== void 0 ? _a : `arg${argId}`;
+    let argId = 0, currentProp = (_a = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _a !== void 0 ? _a : `arg${argId}`;
     for (let [i, arg] of args.entries()) {
         switch (arg.type) {
             case 'dashed-ident':
@@ -26,18 +21,14 @@ export default function parseArgs(args, schema = [], settings) {
                 break;
             case 'function':
                 if (arg.value.name === 'cubic-bezier') {
-                    if (needResolve(currentProp)) {
-                        const easing = __toString(arg);
-                        __set(resultArgs, currentProp, easing);
-                    }
-                    else {
-                        __set(resultArgs, currentProp, arg.value);
-                    }
+                    arg.rawValue = __toString(arg);
+                    __set(resultArgs, currentProp, arg);
                 }
                 else if (env.functions[arg.value.name]) {
                     const v = env.functions[arg.value.name](arg.value);
-                    // set the value into the resultArgs
-                    __set(resultArgs, currentProp, (_b = v.raw) !== null && _b !== void 0 ? _b : v);
+                    // get the raw value
+                    arg.rawValue = (_b = v.raw) !== null && _b !== void 0 ? _b : v;
+                    __set(resultArgs, currentProp, arg);
                     // pass to next arg
                     argId++;
                     // set the new currentProp
@@ -64,14 +55,10 @@ export default function parseArgs(args, schema = [], settings) {
                     currentProp = (_d = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _d !== void 0 ? _d : `arg${argId}`;
                     continue;
                 }
-                // get the value
-                value = arg.value;
-                // handle "resolve" setting
-                if (needResolve(currentProp)) {
-                    value = value.value;
-                }
+                // get the raw value
+                arg.rawValue = arg.value.value;
                 // set the value into the resultArgs
-                __set(resultArgs, currentProp, value);
+                __set(resultArgs, currentProp, arg);
                 // pass to next arg
                 argId++;
                 // set the new currentProp
@@ -81,20 +68,19 @@ export default function parseArgs(args, schema = [], settings) {
                 if (__get(resultArgs, currentProp)) {
                     continue;
                 }
-                // get the value
-                value = arg.value;
-                // handle "resolve" setting
-                if (needResolve(currentProp)) {
-                    value = value.value;
-                }
+                // get the raw value
+                arg.rawValue = arg.value.value;
                 // handle others
-                __set(resultArgs, currentProp, value);
+                __set(resultArgs, currentProp, arg);
                 // pass to next arg
                 argId++;
                 // set the new currentProp
                 currentProp = (_f = schema === null || schema === void 0 ? void 0 : schema[argId]) !== null && _f !== void 0 ? _f : `arg${argId}`;
         }
     }
-    return resultArgs;
+    return {
+        ast: resultArgs,
+        values: __parsedArgsToRawValues(resultArgs),
+    };
 }
 //# sourceMappingURL=parseArgs.js.map

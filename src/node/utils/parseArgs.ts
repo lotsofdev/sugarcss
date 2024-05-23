@@ -2,17 +2,23 @@ import { __get, __set } from '@lotsof/sugar/object';
 import { env } from '../sugarcss.js';
 import __toString from './toString.js';
 
+import __parsedArgsToRawValues from './parsedArgsToRawValues.js';
+
+export interface IParseArgsResult {
+  ast: any;
+  values: any;
+}
+
 export interface IParseArgsSettings {
   separator: string | string[];
   resolve: boolean;
-  defaults: Record<string, any>;
 }
 
 export default function parseArgs(
   args: any[],
   schema: string[] = [],
   settings?: Partial<IParseArgsSettings>,
-): any {
+): IParseArgsResult {
   const finalSettings: IParseArgsSettings = {
     separator: ['comma', 'white-space'],
     resolve: true,
@@ -21,16 +27,7 @@ export default function parseArgs(
 
   const resultArgs = {};
 
-  function needResolve(prop: string) {
-    return (
-      finalSettings.resolve === true ||
-      (Array.isArray(finalSettings.resolve) &&
-        finalSettings.resolve?.includes(prop))
-    );
-  }
-
   let argId = 0,
-    value,
     currentProp = schema?.[argId] ?? `arg${argId}`;
 
   for (let [i, arg] of args.entries()) {
@@ -46,16 +43,15 @@ export default function parseArgs(
         break;
       case 'function':
         if (arg.value.name === 'cubic-bezier') {
-          if (needResolve(currentProp)) {
-            const easing = __toString(arg);
-            __set(resultArgs, currentProp, easing);
-          } else {
-            __set(resultArgs, currentProp, arg.value);
-          }
+          arg.rawValue = __toString(arg);
+          __set(resultArgs, currentProp, arg);
         } else if (env.functions[arg.value.name]) {
           const v = env.functions[arg.value.name](arg.value);
-          // set the value into the resultArgs
-          __set(resultArgs, currentProp, v.raw ?? v);
+
+          // get the raw value
+          arg.rawValue = v.raw ?? v;
+
+          __set(resultArgs, currentProp, arg);
 
           // pass to next arg
           argId++;
@@ -88,16 +84,11 @@ export default function parseArgs(
           continue;
         }
 
-        // get the value
-        value = arg.value;
-
-        // handle "resolve" setting
-        if (needResolve(currentProp)) {
-          value = value.value;
-        }
+        // get the raw value
+        arg.rawValue = arg.value.value;
 
         // set the value into the resultArgs
-        __set(resultArgs, currentProp, value);
+        __set(resultArgs, currentProp, arg);
 
         // pass to next arg
         argId++;
@@ -110,16 +101,11 @@ export default function parseArgs(
           continue;
         }
 
-        // get the value
-        value = arg.value;
-
-        // handle "resolve" setting
-        if (needResolve(currentProp)) {
-          value = value.value;
-        }
+        // get the raw value
+        arg.rawValue = arg.value.value;
 
         // handle others
-        __set(resultArgs, currentProp, value);
+        __set(resultArgs, currentProp, arg);
 
         // pass to next arg
         argId++;
@@ -129,5 +115,8 @@ export default function parseArgs(
     }
   }
 
-  return resultArgs;
+  return {
+    ast: resultArgs,
+    values: __parsedArgsToRawValues(resultArgs),
+  };
 }

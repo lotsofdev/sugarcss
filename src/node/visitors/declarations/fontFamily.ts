@@ -9,7 +9,7 @@ export default function fontFamily(v, settings: ISugarCssSettings): any {
     separator: ['white-space', 'comma'],
   });
 
-  env.fonts.family[name] = Object.values(args);
+  env.fonts.family[name] = Object.values(args.values);
 
   if (settings.verbose) {
     console.log(

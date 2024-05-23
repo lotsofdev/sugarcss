@@ -11,7 +11,7 @@
  * @author      Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 @mixin s-container {
-  width: 100%;
+  width: calc(100svw - var(--s-layout-side-padding) * 2);
   max-width: calc(var(--s-layout-max-width) - var(--s-layout-side-padding) * 2);
   margin: 0 auto;
 }

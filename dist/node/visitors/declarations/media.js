@@ -8,8 +8,8 @@ export default function media(v, settings) {
     if (!env.medias[media]) {
         env.medias[media] = {};
     }
-    env.medias[media].min = (_a = args.min) !== null && _a !== void 0 ? _a : 0;
-    env.medias[media].max = (_b = args.max) !== null && _b !== void 0 ? _b : 0;
+    env.medias[media].min = (_a = args.values.min) !== null && _a !== void 0 ? _a : 0;
+    env.medias[media].max = (_b = args.values.max) !== null && _b !== void 0 ? _b : 0;
     if (settings.verbose) {
         console.log(`Registered media: <cyan>${media}</cyan>: <yellow>${JSON.stringify(env.medias[media])}</yellow>`);
     }

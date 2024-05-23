@@ -1,3 +1,4 @@
+import { __camelCase } from '@lotsof/sugar/string';
 import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
 export default function size(v, settings) {
@@ -8,10 +9,13 @@ export default function size(v, settings) {
     const args = __parseArgs(v.value, [name], {
         separator: ['white-space', 'comma'],
     });
-    let value = args[name];
+    let value = args.values[name];
+    if (name === 'easing') {
+        value = __camelCase(value);
+    }
     env.sizes[name] = value;
     if (settings.verbose) {
-        console.log(`Registered size argument: <cyan>${name}</cyan>: <yellow>${JSON.stringify(env.spaces[name])}</yellow>`);
+        console.log(`Registered size argument: <cyan>${name}</cyan>: <yellow>${JSON.stringify(env.sizes[name])}</yellow>`);
     }
     return [];
 }

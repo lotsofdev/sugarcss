@@ -1,14 +1,23 @@
 export default function sugarcss(settings?: ISugarCssSettings): any;
+export interface ISugarCssRadius {
+    topLeft: number;
+    topRight: number;
+    bottomRight: number;
+    bottomLeft: number;
+    ast: any;
+}
 export interface ISugarCssEnv {
     functions: Record<string, Function>;
     settings: ISugarCssSettings;
     colors: Record<string, any>;
     shades: Record<string, ISugarCssShade>;
+    easingFunctions: Record<string, string>;
     easings: Record<string, ISugarCssEasing>;
     transitions: Record<string, ISugarCssTransition>;
     medias: Record<string, ISugarCssMedia>;
     spaces: ISugarCssSpace;
     sizes: ISugarCssSize;
+    radiuses: Record<string, ISugarCssRadius>;
     fonts: ISugarCssFonts;
 }
 export interface ISugarCssTransition {

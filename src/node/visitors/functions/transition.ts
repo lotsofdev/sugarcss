@@ -1,6 +1,6 @@
 import __ensureTransitionExists from '../../ensure/transitionExists.js';
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types';
+import { ISugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 export default function transition(
@@ -8,17 +8,18 @@ export default function transition(
   settings: ISugarCssSettings,
 ): any {
   const args = {
-    name: 'default',
     ...__parseArgs(value.arguments, ['name'], {
       separator: ['white-space', 'comma'],
     }),
   };
+  args.values = {
+    name: 'default',
+    ...args.values,
+  };
 
-  console.log('AR', args);
+  __ensureTransitionExists(args.values.name);
 
-  __ensureTransitionExists(args.name);
-
-  const transitionArgs = env.transitions[args.name];
+  const transitionArgs = env.transitions[args.values.name];
 
   const parts: string[] = [];
   if (transitionArgs.duration) {

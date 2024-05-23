@@ -7,8 +7,8 @@ export default function fontFamily(value, settings) {
     });
     const fontFamilyArgs = env.fonts.family;
     // protect against invalid fonts
-    __ensureFontFamilyExists(args.name);
-    const families = fontFamilyArgs[args.name];
+    __ensureFontFamilyExists(args.values.name);
+    const families = fontFamilyArgs[args.values.name];
     return {
         raw: `${families.join(',')}`,
     };

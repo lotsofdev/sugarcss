@@ -1,4 +1,4 @@
-import { ISugarCssSettings } from '../../sugarcss.types';
+import { ISugarCssSettings } from '../../sugarcss.types.js';
 /**
  * @name            transition
  * @namespace       css.rule

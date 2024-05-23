@@ -9,7 +9,7 @@ export default function setting(v, settings: ISugarCssSettings): any {
       separator: ['white-space', 'comma'],
     });
 
-  env.settings[name] = __parse(args.value);
+  env.settings[name] = __parse(args.values.value);
 
   if (settings.verbose) {
     console.log(

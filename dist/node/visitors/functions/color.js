@@ -46,7 +46,7 @@ export default function color(value, settings) {
         'spin',
         'alpha',
     ];
-    let color = args.color, modifiers = args.modifiers;
+    let color = args.values.color, modifiers = args.values.modifiers;
     if (!env.colors[color]) {
         throw new Error(`Color "${color}" not found. Please register it first like so: --${settings.prefix}color-${color}: ...;`);
     }
@@ -55,9 +55,6 @@ export default function color(value, settings) {
             throw new Error(`Shade ${modifiers} not found. Please register it first like so:\n --${settings.prefix}shade-${modifiers}: --darken 10;\n --${settings.prefix}shade-${modifiers}-${color}: --lighten 20;`);
         }
         modifiers = (_a = env.shades[`${modifiers}-${color}`]) !== null && _a !== void 0 ? _a : env.shades[modifiers];
-    }
-    if (color === 'coco') {
-        console.log('MOD', color, modifiers);
     }
     if (modifiers) {
         // check modifiers

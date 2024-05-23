@@ -16,11 +16,6 @@ export default function color(v, settings: ISugarCssSettings): any {
     },
   ];
 
-  // // avoid overriding initial registered colors
-  // if (env.colors[name]) {
-  //   return result;
-  // }
-
   const hslaColor = __convert(v.value[0]?.value ?? v.value[0], 'hsla');
   env.colors[name] = hslaColor;
 

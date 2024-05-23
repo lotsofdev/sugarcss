@@ -2,12 +2,12 @@ import __ensureTransitionExists from '../../ensure/transitionExists.js';
 import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
 export default function transition(value, settings) {
-    const args = Object.assign({ name: 'default' }, __parseArgs(value.arguments, ['name'], {
+    const args = Object.assign({}, __parseArgs(value.arguments, ['name'], {
         separator: ['white-space', 'comma'],
     }));
-    console.log('AR', args);
-    __ensureTransitionExists(args.name);
-    const transitionArgs = env.transitions[args.name];
+    args.values = Object.assign({ name: 'default' }, args.values);
+    __ensureTransitionExists(args.values.name);
+    const transitionArgs = env.transitions[args.values.name];
     const parts = [];
     if (transitionArgs.duration) {
         parts.push(`${transitionArgs.duration}s`);

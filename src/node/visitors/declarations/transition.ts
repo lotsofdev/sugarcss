@@ -12,13 +12,15 @@ export default function transition(v, settings: ISugarCssSettings): any {
       },
     );
 
-  args.ast = v;
-  env.transitions[name] = args;
+  env.transitions[name] = {
+    ...args.values,
+    ast: v,
+  };
 
   if (settings.verbose) {
     console.log(
       `Registered transition: <cyan>${name}</cyan>: <yellow>${JSON.stringify(
-        args,
+        args.values,
       )}</yellow>`,
     );
   }

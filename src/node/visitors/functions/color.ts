@@ -49,8 +49,8 @@ export default function color(value: any, settings: ISugarCssSettings): any {
       'alpha',
     ];
 
-  let color = args.color,
-    modifiers = args.modifiers;
+  let color = args.values.color,
+    modifiers = args.values.modifiers;
 
   if (!env.colors[color]) {
     throw new Error(
@@ -65,10 +65,6 @@ export default function color(value: any, settings: ISugarCssSettings): any {
       );
     }
     modifiers = env.shades[`${modifiers}-${color}`] ?? env.shades[modifiers];
-  }
-
-  if (color === 'coco') {
-    console.log('MOD', color, modifiers);
   }
 
   if (modifiers) {

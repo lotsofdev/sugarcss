@@ -5,10 +5,10 @@ export default function easing(v, settings) {
         separator: ['white-space', 'comma'],
     });
     env.easings[name] = {
-        function: args.function,
+        function: args.values.function,
     };
     if (settings.verbose) {
-        console.log(`Registered easing: <cyan>${name}</cyan>: <yellow>${JSON.stringify(args)}</yellow>`);
+        console.log(`Registered easing: <cyan>${name}</cyan>: <yellow>${JSON.stringify(args.values)}</yellow>`);
     }
     return [];
 }

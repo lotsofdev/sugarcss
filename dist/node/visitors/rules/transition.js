@@ -29,8 +29,9 @@ import { env } from '../../sugarcss.js';
  */
 export default function transition(v, settings) {
     // parse args
-    const args = Object.assign({ name: 'default' }, __parseArgs(v.prelude, ['name']));
-    __ensureTransitionExists(args.name);
+    const args = Object.assign({}, __parseArgs(v.prelude, ['name']));
+    args.values = Object.assign({ name: 'default' }, args.values);
+    __ensureTransitionExists(args.values.name);
     const ast = [
         {
             type: 'style',
@@ -49,7 +50,7 @@ export default function transition(v, settings) {
                             property: 'custom',
                             value: {
                                 name: 'transition',
-                                value: env.transitions[args.name].ast.value,
+                                value: env.transitions[args.values.name].ast.value,
                             },
                         },
                     ],
@@ -64,10 +65,5 @@ export default function transition(v, settings) {
         },
     ];
     return ast;
-    //   if (args.arg0 === 'hide') {
-    //     return __hideAst();
-    //   } else {
-    //     return __scrollbarAst(args.arg0, args.arg1.value, args.arg2.value);
-    //   }
 }
 //# sourceMappingURL=transition.js.map

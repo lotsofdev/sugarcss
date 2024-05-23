@@ -4,10 +4,9 @@ export default function transition(v, settings) {
     const name = v.name.replace(`--${settings.prefix}transition-`, ''), args = __parseArgs(v.value, ['property', 'duration', 'easing', 'delay', 'behavior'], {
         separator: ['white-space', 'comma'],
     });
-    args.ast = v;
-    env.transitions[name] = args;
+    env.transitions[name] = Object.assign(Object.assign({}, args.values), { ast: v });
     if (settings.verbose) {
-        console.log(`Registered transition: <cyan>${name}</cyan>: <yellow>${JSON.stringify(args)}</yellow>`);
+        console.log(`Registered transition: <cyan>${name}</cyan>: <yellow>${JSON.stringify(args.values)}</yellow>`);
     }
     return [];
 }

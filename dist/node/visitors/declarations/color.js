@@ -12,10 +12,6 @@ export default function color(v, settings) {
             },
         },
     ];
-    // // avoid overriding initial registered colors
-    // if (env.colors[name]) {
-    //   return result;
-    // }
     const hslaColor = __convert((_b = (_a = v.value[0]) === null || _a === void 0 ? void 0 : _a.value) !== null && _b !== void 0 ? _b : v.value[0], 'hsla');
     env.colors[name] = hslaColor;
     ['h', 's', 'l', 'a'].forEach((key) => {

@@ -5,6 +5,7 @@ import __easingsDeclaration from './visitors/declarations/easing.js';
 import __fontDeclaration from './visitors/declarations/font.js';
 import __fontFamilyDeclaration from './visitors/declarations/fontFamily.js';
 import __mediaDeclaration from './visitors/declarations/media.js';
+import __radiusDeclaration from './visitors/declarations/radius.js';
 import __settingDeclaration from './visitors/declarations/setting.js';
 import __shadeDeclaration from './visitors/declarations/shade.js';
 import __sizeDeclaration from './visitors/declarations/size.js';
@@ -13,11 +14,13 @@ import __transitionDeclaration from './visitors/declarations/transition.js';
 import __colorFunction from './visitors/functions/color.js';
 import __fontFunction from './visitors/functions/font.js';
 import __fontFamilyFunction from './visitors/functions/fontFamily.js';
+import __radiusFunction from './visitors/functions/radius.js';
 import __scalableFunction from './visitors/functions/scalable.js';
 import __sizeFunction from './visitors/functions/size.js';
 import __spaceFunction from './visitors/functions/space.js';
 import __transitionFunction from './visitors/functions/transition.js';
 import __mediaRule from './visitors/rules/media.js';
+import __radiusRule from './visitors/rules/radius.js';
 import __scrollbarRule from './visitors/rules/scrollbar.js';
 import __transitionRule from './visitors/rules/transition.js';
 
@@ -40,6 +43,22 @@ export const env: ISugarCssEnv = {
   },
   colors: {},
   shades: {},
+  easingFunctions: {
+    linear: '1',
+    inSin: '1 - cos((t * pi) / 2)',
+    outSin: 'sin((t * pi) / 2)',
+    inOutSin: '((cos(pi * t) - 1) / 2) * -1',
+    inQuad: 't * t',
+    outQuad: 't * (2 - t)',
+    inCubic: '1 - pow(1 - t, 3)',
+    outCubic: '4 * t * t * t',
+    inQuart: 'pow(t, 4)',
+    outQuart: '1 - pow(1 - t, 4)',
+    inQuint: 'pow(t, 5)',
+    outQuint: '1 - pow(1 - t, 5)',
+    inExpo: 'pow(2, 10 * (t - 1))',
+    outExpo: '1 - pow(2, -10 * t)',
+  },
   easings: {},
   transitions: {},
   medias: {},
@@ -53,6 +72,7 @@ export const env: ISugarCssEnv = {
     min: 0,
     max: 100,
   },
+  radiuses: {},
   fonts: {
     family: {},
     fonts: {},
@@ -65,7 +85,7 @@ console.log = (...args): void => {
     if (typeof arg === 'string') {
       arg = __parseHtml(arg);
     }
-    // nativeConsoleLog(arg);
+    nativeConsoleLog(arg);
   });
 };
 
@@ -127,6 +147,7 @@ export default function sugarcss(
   env.functions[`${finalSettings.prefix}space`] = __spaceFunction;
   env.functions[`${finalSettings.prefix}font`] = __fontFunction;
   env.functions[`${finalSettings.prefix}transition`] = __transitionFunction;
+  env.functions[`${finalSettings.prefix}radius`] = __radiusFunction;
 
   let mixins = new Map();
 
@@ -152,6 +173,9 @@ export default function sugarcss(
       },
       [`${finalSettings.prefix}transition`](v) {
         return __transitionFunction(v, finalSettings);
+      },
+      [`${finalSettings.prefix}radius`](v) {
+        return __radiusFunction(v, finalSettings);
       },
     },
     Declaration: {
@@ -181,6 +205,8 @@ export default function sugarcss(
             return __fontFamilyDeclaration(v, finalSettings);
           case v.name.startsWith(`--${finalSettings.prefix}transition-`):
             return __transitionDeclaration(v, finalSettings);
+          case v.name.startsWith(`--${finalSettings.prefix}radius-`):
+            return __radiusDeclaration(v, finalSettings);
         }
       },
     },
@@ -191,6 +217,8 @@ export default function sugarcss(
             return __scrollbarRule(rule, finalSettings);
           case rule.name === `${finalSettings.prefix}transition`:
             return __transitionRule(rule, finalSettings);
+          case rule.name === `${finalSettings.prefix}radius`:
+            return __radiusRule(rule, finalSettings);
         }
       },
       custom: {

@@ -9,13 +9,13 @@ export default function easing(v, settings: ISugarCssSettings): any {
     });
 
   env.easings[name] = {
-    function: args.function,
+    function: args.values.function,
   };
 
   if (settings.verbose) {
     console.log(
       `Registered easing: <cyan>${name}</cyan>: <yellow>${JSON.stringify(
-        args,
+        args.values,
       )}</yellow>`,
     );
   }

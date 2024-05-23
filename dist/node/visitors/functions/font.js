@@ -7,8 +7,8 @@ export default function font(value, settings) {
         separator: ['white-space', 'comma'],
     });
     const fontsArgs = env.fonts.fonts;
-    __ensureFontExists(args.name);
-    const fontArgs = fontsArgs[args.name];
+    __ensureFontExists(args.values.name);
+    const fontArgs = fontsArgs[args.values.name];
     // size and line-height
     let size = '1em', lineHeight = '1em';
     if (fontArgs.size) {

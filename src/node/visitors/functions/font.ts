@@ -11,9 +11,9 @@ export default function font(value: any, settings: ISugarCssSettings): any {
 
   const fontsArgs = env.fonts.fonts;
 
-  __ensureFontExists(args.name);
+  __ensureFontExists(args.values.name);
 
-  const fontArgs = fontsArgs[args.name];
+  const fontArgs = fontsArgs[args.values.name];
 
   // size and line-height
   let size: string | number = '1em',

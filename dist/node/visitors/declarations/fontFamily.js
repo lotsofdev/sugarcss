@@ -5,7 +5,7 @@ export default function fontFamily(v, settings) {
     const args = __parseArgs(v.value, [name], {
         separator: ['white-space', 'comma'],
     });
-    env.fonts.family[name] = Object.values(args);
+    env.fonts.family[name] = Object.values(args.values);
     if (settings.verbose) {
         console.log(`Registered font family argument: <cyan>${name}</cyan>: <yellow>${JSON.stringify(env.fonts.family[name])}</yellow>`);
     }

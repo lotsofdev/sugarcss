@@ -5,7 +5,7 @@ export default function setting(v, settings) {
     const name = __camelCase(v.name.replace(`--${settings.prefix}setting-`, '')), args = __parseArgs(v.value, ['value'], {
         separator: ['white-space', 'comma'],
     });
-    env.settings[name] = __parse(args.value);
+    env.settings[name] = __parse(args.values.value);
     if (settings.verbose) {
         console.log(`Registered setting: <cyan>${name}</cyan>: <yellow>${env.settings[name]}</yellow>`);
     }

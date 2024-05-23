@@ -4,7 +4,7 @@ export default function scalable(value, settings) {
     const result = {
         raw: '',
     };
-    for (let [key, value] of Object.entries(args)) {
+    for (let [key, value] of Object.entries(args.values)) {
         result.raw += `calc(${value} + var(--${settings.prefix}scale, 1))`;
     }
     return result;

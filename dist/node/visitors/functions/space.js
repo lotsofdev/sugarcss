@@ -1,4 +1,4 @@
-import __ensureEasingExists from '../../ensure/easingExists.js';
+import __ensureEasingFunctionExists from '../../ensure/easingFunctionExists.js';
 import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
 export default function space(value, settings) {
@@ -8,27 +8,27 @@ export default function space(value, settings) {
     const spaceArgs = env.spaces;
     let easing = spaceArgs.easing;
     // check if an easing is specified
-    for (let [argName, argValue] of Object.entries(args)) {
+    for (let [argName, argValue] of Object.entries(args.values)) {
         // if is an easing specified
-        if (env.easings[argName]) {
-            easing = argName;
+        if (typeof argValue === 'string' && env.easings[argValue]) {
+            easing = argValue;
             continue;
         }
     }
     // protect against invalid easings
-    __ensureEasingExists(spaceArgs.easing);
+    __ensureEasingFunctionExists(spaceArgs.easing);
     // prepare the easing function
-    const easingFunction = env.easings[easing];
+    const easingFunction = env.easingFunctions[easing];
     // calculate the delta between min and max
     const spaceDelta = spaceArgs.max - spaceArgs.min;
     const spaces = [];
-    for (let [argName, argValue] of Object.entries(args)) {
+    for (let [argName, argValue] of Object.entries(args.values)) {
         // skip easing declaration
-        if (env.easings[argName] || typeof argValue !== 'number') {
+        if (env.easingFunctions[argName] || typeof argValue !== 'number') {
             continue;
         }
         // get the requested value percentage
-        const easingFunctionStr = easingFunction.function.replace(/t/gm, `${argValue / 100}`);
+        const easingFunctionStr = easingFunction.replace(/t/gm, `${argValue / 100}`);
         const resultCalc = `calc(((${easingFunctionStr}) * ${(spaceDelta / 100) * argValue} + ${spaceArgs.min}) * 1px)`;
         // create the calc declaration
         spaces.push(resultCalc);

@@ -1,4 +1,4 @@
-import { ISugarCssSettings } from '../../sugarcss.types';
+import { ISugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 import __ensureTransitionExists from '../../ensure/transitionExists.js';
@@ -35,11 +35,14 @@ import { env } from '../../sugarcss.js';
 export default function transition(v: any, settings: ISugarCssSettings): any {
   // parse args
   const args = {
-    name: 'default',
     ...__parseArgs(v.prelude, ['name']),
   };
+  args.values = {
+    name: 'default',
+    ...args.values,
+  };
 
-  __ensureTransitionExists(args.name);
+  __ensureTransitionExists(args.values.name);
 
   const ast = [
     {
@@ -59,7 +62,7 @@ export default function transition(v: any, settings: ISugarCssSettings): any {
               property: 'custom',
               value: {
                 name: 'transition',
-                value: env.transitions[args.name].ast.value,
+                value: env.transitions[args.values.name].ast.value,
               },
             },
           ],
@@ -75,10 +78,4 @@ export default function transition(v: any, settings: ISugarCssSettings): any {
   ];
 
   return ast;
-
-  //   if (args.arg0 === 'hide') {
-  //     return __hideAst();
-  //   } else {
-  //     return __scrollbarAst(args.arg0, args.arg1.value, args.arg2.value);
-  //   }
 }

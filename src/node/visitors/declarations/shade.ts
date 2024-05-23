@@ -6,12 +6,12 @@ import __parseArgs from '../../utils/parseArgs.js';
 export default function share(v, settings: ISugarCssSettings): any {
   const shade = v.name.replace(`--${settings.prefix}shade-`, '');
   const args = __parseArgs(v.value, ['modifiers']);
-  env.shades[shade] = args.modifiers;
+  env.shades[shade] = args.values.modifiers;
 
   if (settings.verbose) {
     console.log(
       `Registered shade: <cyan>${shade}</cyan>: <yellow>${JSON.stringify(
-        args.modifiers,
+        args.values.modifiers,
         null,
       )}</yellow>`,
     );
