@@ -13,12 +13,12 @@ import __parseArgs from '../../utils/parseArgs.js';
  * Allow to apply modifiers or shades to the color like darken, lighten, saturate, desaturate, spin, etc...
  * Here's the list of available modifiers:
  *
- * - lighten: 0-100
- * - darken: 0-100
- * - saturate: 0-100
- * - desaturate: 0-100
- * - spin: 0-360
- * - alpha: 0-1
+ * - `lighten`: 0-100
+ * - `darken`: 0-100
+ * - `saturate`: 0-100
+ * - `desaturate`: 0-100
+ * - `spin`: 0-360
+ * - `alpha`: 0-1
  *
  * The shades are registered like so: --s-shade-placeholder: --darken 10;
  *
@@ -27,7 +27,9 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @return     {Css}                                The generated css
  *
  * @example         css
- * --s-shade-test: --lighten 10;
+ * :root {
+ *    --s-shade-test: --lighten 10;
+ * }
  *
  * .my-element {
  *   color: s-color(accent);

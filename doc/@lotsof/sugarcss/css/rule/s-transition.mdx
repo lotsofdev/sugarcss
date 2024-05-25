@@ -1,5 +1,5 @@
 ---
-title: 'radius'
+title: 's-transition'
 namespace: '@lotsof.sugarcss.css.rule'
 description: function trim() { [native code] }
 type: 'AtRule'
@@ -9,7 +9,7 @@ platform: '[{"name":"css","description":""}]'
 author: '{"name":"Olivier Bossel","email":"olivier.bossel@gmail.com","url":"https://hello@lotsof.dev"}'
 ---
 <div class="docmap-mdx">
-# radius
+# s-transition
 <div class="_namespace">@lotsof.sugarcss.css.rule</div>
 <div class="_metas">
 <div class="_type"><span class="_type-label">Type:</span><span class="_type-value">AtRule</span></div>
@@ -18,8 +18,11 @@ author: '{"name":"Olivier Bossel","email":"olivier.bossel@gmail.com","url":"http
 <div class="_platform"><span class="_platform-label">Platform:</span><span class="_platform-value">css</span></div>
 </div>
 <div class="_description">
-<p>This declaration allows you to apply a registered raius easily.
-To be able to use this, you need to register at least 1 radius like in the example below:</p>
+<p>This declaration allows you to apply a registered transition easily.
+To be able to use this, you need to register at least 1 transition like so:</p>
+<ul>
+<li><code>--s-transition-{name}: all .3s ease-in-out;</code></li>
+</ul>
 
 </div>
 <div class="_params">
@@ -43,35 +46,13 @@ To be able to use this, you need to register at least 1 radius like in the examp
 ## Examples
 ```css
 :root {
-   --s-radius-default: 10px;
-   --s-radius-special: 20px 10px 12px 34px;
+   --s-transition-slow: all .3s ease-in-out;
 }
 
 .my-element {
-     @s-radius();
-}
-
-.my-other-element {
-    @s-radius(special);
+     @s-transition(slow);
 }
 ```
-</div>
-<div class="_todo">
-## Todo
-<ul class="_list">
-<li class="_item">
-<span class="_description">Something</span>
-<span class="_priority -normal">normal</span>
-</li>
-<li class="_item">
-<span class="_description">Something else</span>
-<span class="_priority -high">high</span>
-</li>
-<li class="_item">
-<span class="_description">wefewfwe else</span>
-<span class="_priority -low">low</span>
-</li>
-</ul>
 </div>
 <div class="_author">
 ## Author

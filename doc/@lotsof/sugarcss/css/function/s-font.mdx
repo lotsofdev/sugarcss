@@ -1,5 +1,5 @@
 ---
-title: 's-color'
+title: 's-font'
 namespace: '@lotsof.sugarcss.css.function'
 description: function trim() { [native code] }
 type: 'Function'
@@ -9,7 +9,7 @@ platform: '[{"name":"css","description":""}]'
 author: '{"name":"Olivier Bossel","email":"olivier.bossel@gmail.com","url":"https://hello@lotsof.dev"}'
 ---
 <div class="docmap-mdx">
-# s-color
+# s-font
 <div class="_namespace">@lotsof.sugarcss.css.function</div>
 <div class="_metas">
 <div class="_type"><span class="_type-label">Type:</span><span class="_type-value">Function</span></div>
@@ -18,30 +18,25 @@ author: '{"name":"Olivier Bossel","email":"olivier.bossel@gmail.com","url":"http
 <div class="_platform"><span class="_platform-label">Platform:</span><span class="_platform-value">css</span></div>
 </div>
 <div class="_description">
-<p>Apply a color from the colors registered ones.
-Allow to apply modifiers or shades to the color like darken, lighten, saturate, desaturate, spin, etc...
-Here&#39;s the list of available modifiers:</p>
+<p>Apply a font from the fonts registered ones.
+The supported fonts properties are:</p>
 <ul>
-<li><code>lighten</code>: 0-100</li>
-<li><code>darken</code>: 0-100</li>
-<li><code>saturate</code>: 0-100</li>
-<li><code>desaturate</code>: 0-100</li>
-<li><code>spin</code>: 0-360</li>
-<li><code>alpha</code>: 0-1</li>
+<li><code>family</code>: The font family like &quot;sans-serif&quot;, &quot;serif&quot;, etc...</li>
+<li><code>size</code>: The font size like &quot;1em&quot;, &quot;12px&quot;, etc...</li>
+<li><code>lineHeight</code>: The font line-height like &quot;1em&quot;, &quot;12px&quot;, etc...</li>
+<li><code>weight</code>: The font weight like &quot;normal&quot;, &quot;bold&quot;, etc...</li>
+<li><code>style</code>: The font style like &quot;normal&quot;, &quot;italic&quot;, etc...</li>
+<li><code>variant</code>: The font variant like &quot;normal&quot;, &quot;small-caps&quot;, etc...</li>
+<li><code>stretch</code>: The font stretch like &quot;normal&quot;, &quot;condensed&quot;, etc...</li>
 </ul>
-<p>The shades are registered like so: --s-shade-placeholder: --darken 10;</p>
 
 </div>
 <div class="_params">
 ## Params
 <ol class="_list">
 <li class="_item">
-<span class="_name">color<span class="_required">*</span></span><span class="_default"></span> <span class="_type">String</span>
-<p class="_description">The color name you want to apply like "main", "accent", etc...</p>
-</li>
-<li class="_item">
-<span class="_name">shadeOrModifiers<span class="_required">*</span></span><span class="_default"></span> <span class="_type">String</span>
-<p class="_description">The shade name you want to apply like "text", "placeholder", etc... or a string of modifiers like --lighten 10 --saturate 20</p>
+<span class="_name">font<span class="_required">*</span></span><span class="_default"></span> <span class="_type">String</span>
+<p class="_description">The font name you want to apply from registered ones</p>
 </li>
 </ol>
 </div>
@@ -57,13 +52,13 @@ Here&#39;s the list of available modifiers:</p>
 ## Examples
 ```css
 :root {
-   --s-shade-test: --lighten 10;
+  --s-font-...: "Roboto,sans-serif" %size %lineHeight %weight %style %variant %stretch;
+  --s-font-family-code: "Fira Code", monospace;
+  --s-font-code: s-font-family(code) 16px 26px 300;
 }
 
 .my-element {
-  color: s-color(accent);
-  color: s-color(accent, test);
-  color: s-color(accent, --darken 20 --spin 30);
+  font: s-font(code);
 }
 ```
 </div>

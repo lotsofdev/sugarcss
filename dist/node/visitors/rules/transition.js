@@ -2,7 +2,7 @@ import __parseArgs from '../../utils/parseArgs.js';
 import __ensureTransitionExists from '../../ensure/transitionExists.js';
 import { env } from '../../sugarcss.js';
 /**
- * @name            transition
+ * @name            s-transition
  * @namespace       css.rule
  * @type            AtRule
  * @platform        css
@@ -16,9 +16,12 @@ import { env } from '../../sugarcss.js';
  * @param      {String}        name              The transition name you want to apply
  * @return     {Css}                              The generated css
  *
- * @example         css
+ * @snippet       @s-transition($1);
  *
- * --s-transition-slow: all .3s ease-in-out;
+ * @example         css
+ * :root {
+ *    --s-transition-slow: all .3s ease-in-out;
+ * }
  *
  * .my-element {
  *      @s-transition(slow);
