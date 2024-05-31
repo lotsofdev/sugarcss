@@ -1,13 +1,13 @@
 import { ISugarCssSettings } from '../../sugarcss.types.js';
 /**
- * @name            s-transition
+ * @name            s-sizes
  * @namespace       css.declaration
  * @type            Declaration
  * @platform        css
  * @status          stable
  *
- * This variable allows you to register a transition value that you can use in your css easily.
- * You can register as many transition as you want.
+ * This variable allows you to register a size value that you can use in your css easily.
+ * You can register as many size as you want.
  *
  * @param     {String}         min                The easing value for the min size
  * @param     {String}         max                The easing value for the max size
@@ -15,19 +15,16 @@ import { ISugarCssSettings } from '../../sugarcss.types.js';
  *
  * @example         css
  * :root {
- *    --s-transition-slow: all 0.3s s-easing();
- *    --s-transition-default: all 0.2s s-easing();
- *    --s-transition-fast: all 0.1s s-easing();
+ *      --s-sizes: 0 80px linear;
  * }
  *
  * .my-element {
- *    transition: s-transition(slow);
- *
- *    // or using a mixin
- *    @s-transition(default);
+ *    font-size: s-size(10); // 8px
+ *    font-size: s-size(20); // 16px
+ *    font-size: s-size(100); // 80px
  * }
  *
  * @since           0.0.1
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
-export default function transition(v: any, settings: ISugarCssSettings): any;
+export default function sizes(v: any, settings: ISugarCssSettings): any;

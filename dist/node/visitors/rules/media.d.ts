@@ -19,6 +19,8 @@ import { ISugarCssSettings } from '../../sugarcss.types.js';
  * - `gt-...`: greater than
  * - `gte-...`: greater than or equal
  * - `e-...`: equal
+ * - `dark`: dark mode
+ * - `light`: light mode
  *
  * @param      {String}        query              The query to parse
  * @return     {Css}                              The generated css

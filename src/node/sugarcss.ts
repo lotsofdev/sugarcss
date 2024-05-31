@@ -8,14 +8,15 @@ import __mediaDeclaration from './visitors/declarations/media.js';
 import __radiusDeclaration from './visitors/declarations/radius.js';
 import __settingDeclaration from './visitors/declarations/setting.js';
 import __shadeDeclaration from './visitors/declarations/shade.js';
-import __sizeDeclaration from './visitors/declarations/size.js';
-import __spaceDeclaration from './visitors/declarations/space.js';
+import __sizesDeclaration from './visitors/declarations/sizes.js';
+import __spacesDeclaration from './visitors/declarations/spaces.js';
 import __transitionDeclaration from './visitors/declarations/transition.js';
 import __colorFunction from './visitors/functions/color.js';
 import __fontFunction from './visitors/functions/font.js';
 import __fontFamilyFunction from './visitors/functions/fontFamily.js';
 import __radiusFunction from './visitors/functions/radius.js';
 import __scalableFunction from './visitors/functions/scalable.js';
+import __layoutFunction from './visitors/functions/layout.js';
 import __sizeFunction from './visitors/functions/size.js';
 import __spaceFunction from './visitors/functions/space.js';
 import __transitionFunction from './visitors/functions/transition.js';
@@ -36,7 +37,6 @@ import { __parseHtml } from '@lotsof/sugar/console';
 export const env: ISugarCssEnv = {
   functions: {},
   settings: {
-    prefix: 's-',
     verbose: true,
     mobileFirst: false,
     scalable: ['padding'],
@@ -140,42 +140,46 @@ export default function sugarcss(
     ...settings,
   };
   env.settings = finalSettings;
-  env.functions[`${finalSettings.prefix}color`] = __colorFunction;
-  env.functions[`${finalSettings.prefix}font-family`] = __fontFamilyFunction;
-  env.functions[`${finalSettings.prefix}scalable`] = __scalableFunction;
-  env.functions[`${finalSettings.prefix}size`] = __sizeFunction;
-  env.functions[`${finalSettings.prefix}space`] = __spaceFunction;
-  env.functions[`${finalSettings.prefix}font`] = __fontFunction;
-  env.functions[`${finalSettings.prefix}transition`] = __transitionFunction;
-  env.functions[`${finalSettings.prefix}radius`] = __radiusFunction;
+  env.functions[`s-color`] = __colorFunction;
+  env.functions[`s-font-family`] = __fontFamilyFunction;
+  env.functions[`s-scalable`] = __scalableFunction;
+  env.functions[`s-size`] = __sizeFunction;
+  env.functions[`s-space`] = __spaceFunction;
+  env.functions[`s-font`] = __fontFunction;
+  env.functions[`s-transition`] = __transitionFunction;
+  env.functions[`s-radius`] = __radiusFunction;
+  env.functions['s-layout'] = __layoutFunction;
 
   let mixins = new Map();
 
   const visitors = {
     Function: {
-      [`${finalSettings.prefix}color`](v) {
+      [`s-color`](v) {
         return __colorFunction(v, finalSettings);
       },
-      [`${finalSettings.prefix}scalable`](v) {
+      [`s-scalable`](v) {
         return __scalableFunction(v, finalSettings);
       },
-      [`${finalSettings.prefix}space`](v) {
+      [`s-space`](v) {
         return __spaceFunction(v, finalSettings);
       },
-      [`${finalSettings.prefix}size`](v) {
+      [`s-size`](v) {
         return __sizeFunction(v, finalSettings);
       },
-      [`${finalSettings.prefix}font-family`](v) {
+      [`s-font-family`](v) {
         return __fontFamilyFunction(v, finalSettings);
       },
-      [`${finalSettings.prefix}font`](v) {
+      [`s-font`](v) {
         return __fontFunction(v, finalSettings);
       },
-      [`${finalSettings.prefix}transition`](v) {
+      [`s-transition`](v) {
         return __transitionFunction(v, finalSettings);
       },
-      [`${finalSettings.prefix}radius`](v) {
+      [`s-radius`](v) {
         return __radiusFunction(v, finalSettings);
+      },
+      ['s-layout'](v) {
+        return __layoutFunction(v, finalSettings);
       },
     },
     Declaration: {
@@ -184,28 +188,28 @@ export default function sugarcss(
           console.log(JSON.stringify(v, null, 4));
         }
         switch (true) {
-          case v.name.startsWith(`--${finalSettings.prefix}color-`):
+          case v.name.startsWith(`--s-color-`):
             return __colorDeclaration(v, finalSettings);
-          case v.name.startsWith(`--${finalSettings.prefix}shade-`):
+          case v.name.startsWith(`--s-shade-`):
             return __shadeDeclaration(v, finalSettings);
-          case v.name.startsWith(`--${finalSettings.prefix}media-`):
+          case v.name.startsWith(`--s-media-`):
             return __mediaDeclaration(v, finalSettings);
-          case v.name.startsWith(`--${finalSettings.prefix}easing-`):
+          case v.name.startsWith(`--s-easing-`):
             return __easingsDeclaration(v, finalSettings);
-          case v.name.startsWith(`--${finalSettings.prefix}space-`):
-            return __spaceDeclaration(v, finalSettings);
-          case v.name.startsWith(`--${finalSettings.prefix}size-`):
-            return __sizeDeclaration(v, finalSettings);
-          case v.name.startsWith(`--${finalSettings.prefix}setting-`):
+          case v.name === '--s-spaces':
+            return __spacesDeclaration(v, finalSettings);
+          case v.name === '--s-sizes':
+            return __sizesDeclaration(v, finalSettings);
+          case v.name.startsWith(`--s-setting-`):
             return __settingDeclaration(v, finalSettings);
-          case v.name.startsWith(`--${finalSettings.prefix}font-`) &&
-            !v.name.startsWith(`--${finalSettings.prefix}font-family-`):
+          case v.name.startsWith(`--s-font-`) &&
+            !v.name.startsWith(`--s-font-family-`):
             return __fontDeclaration(v, finalSettings);
-          case v.name.startsWith(`--${finalSettings.prefix}font-family-`):
+          case v.name.startsWith(`--s-font-family-`):
             return __fontFamilyDeclaration(v, finalSettings);
-          case v.name.startsWith(`--${finalSettings.prefix}transition-`):
+          case v.name.startsWith(`--s-transition-`):
             return __transitionDeclaration(v, finalSettings);
-          case v.name.startsWith(`--${finalSettings.prefix}radius-`):
+          case v.name.startsWith(`--s-radius-`):
             return __radiusDeclaration(v, finalSettings);
         }
       },
@@ -213,11 +217,11 @@ export default function sugarcss(
     Rule: {
       unknown(rule) {
         switch (true) {
-          case rule.name === `${finalSettings.prefix}scrollbar`:
+          case rule.name === `s-scrollbar`:
             return __scrollbarRule(rule, finalSettings);
-          case rule.name === `${finalSettings.prefix}transition`:
+          case rule.name === `s-transition`:
             return __transitionRule(rule, finalSettings);
-          case rule.name === `${finalSettings.prefix}radius`:
+          case rule.name === `s-radius`:
             return __radiusRule(rule, finalSettings);
         }
       },

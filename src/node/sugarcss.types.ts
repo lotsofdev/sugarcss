@@ -44,7 +44,6 @@ export interface ISugarCssFontsFont {
 }
 
 export interface ISugarCssSettings {
-  prefix: string;
   verbose: boolean;
   mobileFirst: boolean;
   scalable: string[];

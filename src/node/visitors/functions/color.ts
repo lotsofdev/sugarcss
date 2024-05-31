@@ -56,14 +56,14 @@ export default function color(value: any, settings: ISugarCssSettings): any {
 
   if (!env.colors[color]) {
     throw new Error(
-      `Color "${color}" not found. Please register it first like so: --${settings.prefix}color-${color}: ...;`,
+      `Color "${color}" not found. Please register it first like so: --s-color-${color}: ...;`,
     );
   }
 
   if (typeof modifiers === 'string') {
     if (!env.shades[`${modifiers}-${color}`] && !env.shades[modifiers]) {
       throw new Error(
-        `Shade ${modifiers} not found. Please register it first like so:\n --${settings.prefix}shade-${modifiers}: --darken 10;\n --${settings.prefix}shade-${modifiers}-${color}: --lighten 20;`,
+        `Shade ${modifiers} not found. Please register it first like so:\n --s-shade-${modifiers}: --darken 10;\n --s-shade-${modifiers}-${color}: --lighten 20;`,
       );
     }
     modifiers = env.shades[`${modifiers}-${color}`] ?? env.shades[modifiers];
@@ -93,23 +93,19 @@ export default function color(value: any, settings: ISugarCssSettings): any {
         : '',
       spin = modifiers.spin ? `+ ${modifiers.spin}` : '';
 
-    if (color === 'coco') {
-      console.log(lModifier);
-    }
-
     return {
       raw: [
         `hsla(`,
-        `calc(var(--${settings.prefix}color-${color}-h)${spin}),`,
-        `calc((var(--${settings.prefix}color-${color}-s)${sModifier}) * 1%),`,
-        `calc((var(--${settings.prefix}color-${color}-l)${lModifier}) * 1%),`,
-        `var(--${settings.prefix}color-${color}-a)`,
+        `calc(var(--s-color-${color}-h)${spin}),`,
+        `calc((var(--s-color-${color}-s)${sModifier}) * 1%),`,
+        `calc((var(--s-color-${color}-l)${lModifier}) * 1%),`,
+        `${modifiers.alpha ?? 1}`,
         `)`,
       ].join(''),
     };
   } else {
     return {
-      raw: `var(--${settings.prefix}color-${color})`,
+      raw: `var(--s-color-${color})`,
     };
   }
 }

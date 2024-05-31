@@ -39,7 +39,7 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 export default function color(value, settings) {
-    var _a;
+    var _a, _b;
     const args = __parseArgs(value.arguments, ['color', 'modifiers']), availableModifiers = [
         'lighten',
         'darken',
@@ -50,11 +50,11 @@ export default function color(value, settings) {
     ];
     let color = args.values.color, modifiers = args.values.modifiers;
     if (!env.colors[color]) {
-        throw new Error(`Color "${color}" not found. Please register it first like so: --${settings.prefix}color-${color}: ...;`);
+        throw new Error(`Color "${color}" not found. Please register it first like so: --s-color-${color}: ...;`);
     }
     if (typeof modifiers === 'string') {
         if (!env.shades[`${modifiers}-${color}`] && !env.shades[modifiers]) {
-            throw new Error(`Shade ${modifiers} not found. Please register it first like so:\n --${settings.prefix}shade-${modifiers}: --darken 10;\n --${settings.prefix}shade-${modifiers}-${color}: --lighten 20;`);
+            throw new Error(`Shade ${modifiers} not found. Please register it first like so:\n --s-shade-${modifiers}: --darken 10;\n --s-shade-${modifiers}-${color}: --lighten 20;`);
         }
         modifiers = (_a = env.shades[`${modifiers}-${color}`]) !== null && _a !== void 0 ? _a : env.shades[modifiers];
     }
@@ -74,23 +74,20 @@ export default function color(value, settings) {
             : modifiers.desaturate
                 ? ` - ${modifiers.desaturate}`
                 : '', spin = modifiers.spin ? `+ ${modifiers.spin}` : '';
-        if (color === 'coco') {
-            console.log(lModifier);
-        }
         return {
             raw: [
                 `hsla(`,
-                `calc(var(--${settings.prefix}color-${color}-h)${spin}),`,
-                `calc((var(--${settings.prefix}color-${color}-s)${sModifier}) * 1%),`,
-                `calc((var(--${settings.prefix}color-${color}-l)${lModifier}) * 1%),`,
-                `var(--${settings.prefix}color-${color}-a)`,
+                `calc(var(--s-color-${color}-h)${spin}),`,
+                `calc((var(--s-color-${color}-s)${sModifier}) * 1%),`,
+                `calc((var(--s-color-${color}-l)${lModifier}) * 1%),`,
+                `${(_b = modifiers.alpha) !== null && _b !== void 0 ? _b : 1}`,
                 `)`,
             ].join(''),
         };
     }
     else {
         return {
-            raw: `var(--${settings.prefix}color-${color})`,
+            raw: `var(--s-color-${color})`,
         };
     }
 }

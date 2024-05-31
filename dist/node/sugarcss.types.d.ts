@@ -38,7 +38,6 @@ export interface ISugarCssFontsFont {
     stretch: string | number;
 }
 export interface ISugarCssSettings {
-    prefix: string;
     verbose: boolean;
     mobileFirst: boolean;
     scalable: string[];

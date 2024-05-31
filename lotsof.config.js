@@ -12,8 +12,12 @@ __defineConfig({
       },
     },
     build: {
-      outPath: null,
-      outDir: `${__dirname()}/doc`,
+      outDir: `${__dirname()}/../website-sugarcss/src/content/sugarcss`,
+      outPath: (docmapObj, settings) => {
+        return `${__dirname()}/../website-sugarcss/src/content/${docmapObj.id
+          .replace('@lotsof.', '')
+          .replace(/\./g, '/')}.mdx`;
+      },
       mdx: true,
       json: false,
     },

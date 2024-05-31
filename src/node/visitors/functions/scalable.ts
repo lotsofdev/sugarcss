@@ -9,7 +9,7 @@ export default function scalable(value: any, settings: ISugarCssSettings): any {
   };
 
   for (let [key, value] of Object.entries(args.values)) {
-    result.raw += `calc(${value} + var(--${settings.prefix}scale, 1))`;
+    result.raw += `calc(${value} + var(--scale, 1))`;
   }
 
   return result;

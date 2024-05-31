@@ -21,6 +21,8 @@ import { ISugarCssSettings } from '../../sugarcss.types.js';
  * - `gt-...`: greater than
  * - `gte-...`: greater than or equal
  * - `e-...`: equal
+ * - `dark`: dark mode
+ * - `light`: light mode
  *
  * @param      {String}        query              The query to parse
  * @return     {Css}                              The generated css
@@ -81,7 +83,7 @@ export default function media(v: any, settings: ISugarCssSettings): any {
     // make sure the requested media exists
     if (!env.medias[media]) {
       throw new Error(
-        `Media ${media} does not exist. Please define it like so:\n- --${settings.prefix}media-${media}: 0 768px;`,
+        `Media ${media} does not exist. Please define it like so:\n- --media-${media}: 0 768px;`,
       );
     }
 

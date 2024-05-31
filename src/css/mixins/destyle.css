@@ -7,6 +7,11 @@
  * 
  * This mixin allows you to apply the destyle css reset.
  *
+ * @return        {Css}                The generated css
+ * 
+ * @example         css
+ * \@apply destyle;
+ *
  * @see         https://nicolas-cusan.github.io/destyle.css/
  * @since       0.0.1
  * @author      Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
