@@ -11,7 +11,7 @@ import { env } from '../../sugarcss.js';
  * This declaration allows you to apply a registered transition easily.
  * To be able to use this, you need to register at least 1 transition like so:
  *
- * - `--s-transition-{name}: all .3s ease-in-out;`
+ * - `--s-transition-...: all .3s ease-in-out;`
  *
  * @param      {String}        name              The transition name you want to apply
  * @return     {Css}                              The generated css

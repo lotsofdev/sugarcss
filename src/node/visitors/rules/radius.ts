@@ -20,10 +20,6 @@ import { env } from '../../sugarcss.js';
  *
  * @snippet       @s-radius($1);
  *
- * @todo        Something
- * @todo        Something else      high
- * @todo        wefewfwe else      low
- *
  * @example         css
  * :root {
  *    --s-radius-default: 10px;
