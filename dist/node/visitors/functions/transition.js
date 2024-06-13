@@ -32,6 +32,7 @@ export default function transition(value, settings) {
         separator: ['white-space', 'comma'],
     }));
     args.values = Object.assign({ name: 'default' }, args.values);
+    console.log(args, env.transitions);
     __ensureTransitionExists(args.values.name);
     const transitionArgs = env.transitions[args.values.name];
     const parts = [];

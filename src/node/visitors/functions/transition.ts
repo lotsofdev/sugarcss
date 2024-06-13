@@ -44,6 +44,8 @@ export default function transition(
     ...args.values,
   };
 
+  console.log(args, env.transitions);
+
   __ensureTransitionExists(args.values.name);
 
   const transitionArgs = env.transitions[args.values.name];

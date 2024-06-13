@@ -20,7 +20,13 @@ export default function (size, thumb, track) {
                     declarations: [
                         {
                             property: 'width',
-                            value: size,
+                            value: {
+                                type: 'length-percentage',
+                                value: {
+                                    type: 'dimension',
+                                    value: size.value,
+                                },
+                            },
                         },
                         {
                             property: 'height',
@@ -28,10 +34,7 @@ export default function (size, thumb, track) {
                                 type: 'length-percentage',
                                 value: {
                                     type: 'dimension',
-                                    value: {
-                                        unit: 'px',
-                                        value: 10,
-                                    },
+                                    value: size.value,
                                 },
                             },
                         },
@@ -64,8 +67,13 @@ export default function (size, thumb, track) {
                     importantDeclarations: [],
                     declarations: [
                         {
-                            property: 'background-color',
-                            value: track,
+                            property: 'unparsed',
+                            value: {
+                                propertyId: {
+                                    property: 'background-color',
+                                },
+                                value: [track],
+                            },
                         },
                     ],
                 },
@@ -96,8 +104,13 @@ export default function (size, thumb, track) {
                     importantDeclarations: [],
                     declarations: [
                         {
-                            property: 'background-color',
-                            value: thumb,
+                            property: 'unparsed',
+                            value: {
+                                propertyId: {
+                                    property: 'background-color',
+                                },
+                                value: [thumb],
+                            },
                         },
                     ],
                 },

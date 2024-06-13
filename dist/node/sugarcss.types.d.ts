@@ -8,6 +8,7 @@ export interface ISugarCssRadius {
 }
 export interface ISugarCssEnv {
     functions: Record<string, Function>;
+    rules: Record<string, Function>;
     settings: ISugarCssSettings;
     colors: Record<string, any>;
     shades: Record<string, ISugarCssShade>;
@@ -15,10 +16,17 @@ export interface ISugarCssEnv {
     easings: Record<string, ISugarCssEasing>;
     transitions: Record<string, ISugarCssTransition>;
     medias: Record<string, ISugarCssMedia>;
+    grids: Record<string, ISugarCssGrid>;
     spaces: ISugarCssSpace;
     sizes: ISugarCssSize;
+    containers: Record<string, ISugarCssContainer>;
     radiuses: Record<string, ISugarCssRadius>;
     fonts: ISugarCssFonts;
+}
+export interface ISugarCssGrid {
+    layout: string;
+    gap: number;
+    ast: any;
 }
 export interface ISugarCssTransition {
     property: string;
@@ -27,6 +35,11 @@ export interface ISugarCssTransition {
     delay: string;
     behavior: string;
     ast: any;
+}
+export interface ISugarCssContainer {
+    minWidth: number;
+    maxWIdth: number;
+    sidePadding: number;
 }
 export interface ISugarCssFontsFont {
     family: string;

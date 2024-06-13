@@ -33,7 +33,7 @@ export default function scrollbar(v, settings) {
         return __hideAst();
     }
     else {
-        return __scrollbarAst(args.values.arg0, args.values.arg1.value, args.values.arg2.value);
+        return __scrollbarAst(args.ast.arg0, args.ast.arg1, args.ast.arg2);
     }
 }
 //# sourceMappingURL=scrollbar.js.map

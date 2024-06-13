@@ -5,7 +5,9 @@ import __fontFamilyDeclaration from './visitors/declarations/fontFamily.js';
 import __mediaDeclaration from './visitors/declarations/media.js';
 import __radiusDeclaration from './visitors/declarations/radius.js';
 import __settingDeclaration from './visitors/declarations/setting.js';
+import __containerDeclaration from './visitors/declarations/container.js';
 import __shadeDeclaration from './visitors/declarations/shade.js';
+import __gridDeclaration from './visitors/declarations/grid.js';
 import __sizesDeclaration from './visitors/declarations/sizes.js';
 import __spacesDeclaration from './visitors/declarations/spaces.js';
 import __transitionDeclaration from './visitors/declarations/transition.js';
@@ -14,7 +16,7 @@ import __fontFunction from './visitors/functions/font.js';
 import __fontFamilyFunction from './visitors/functions/fontFamily.js';
 import __radiusFunction from './visitors/functions/radius.js';
 import __scalableFunction from './visitors/functions/scalable.js';
-import __layoutFunction from './visitors/functions/layout.js';
+import __containerFunction from './visitors/functions/container.js';
 import __sizeFunction from './visitors/functions/size.js';
 import __spaceFunction from './visitors/functions/space.js';
 import __transitionFunction from './visitors/functions/transition.js';
@@ -22,11 +24,15 @@ import __mediaRule from './visitors/rules/media.js';
 import __radiusRule from './visitors/rules/radius.js';
 import __scrollbarRule from './visitors/rules/scrollbar.js';
 import __transitionRule from './visitors/rules/transition.js';
+import __gridRule from './visitors/rules/grid.js';
+import __fitRule from './visitors/rules/fit.js';
+import __containerRule from './visitors/rules/container.js';
 import browserslist from 'browserslist';
 import { browserslistToTargets, composeVisitors, } from 'lightningcss';
 import { __parseHtml } from '@lotsof/sugar/console';
 export const env = {
     functions: {},
+    rules: {},
     settings: {
         verbose: true,
         mobileFirst: false,
@@ -53,6 +59,8 @@ export const env = {
     easings: {},
     transitions: {},
     medias: {},
+    grids: {},
+    containers: {},
     spaces: {
         easing: 'linear',
         min: 0,
@@ -91,7 +99,7 @@ export function sugarize(ligningcss, settings) {
         customAtRules: Object.assign(Object.assign({}, ((_a = ligningcss === null || ligningcss === void 0 ? void 0 : ligningcss.customAtRules) !== null && _a !== void 0 ? _a : {})), { mixin: {
                 prelude: '<custom-ident>',
                 body: 'style-block',
-            }, apply: {
+            }, include: {
                 prelude: '<custom-ident>',
             } }),
         visitor: composeVisitors(visitor),
@@ -109,7 +117,13 @@ export default function sugarcss(settings = {}) {
     env.functions[`s-font`] = __fontFunction;
     env.functions[`s-transition`] = __transitionFunction;
     env.functions[`s-radius`] = __radiusFunction;
-    env.functions['s-layout'] = __layoutFunction;
+    env.functions['s-container'] = __containerFunction;
+    env.rules['s-scrollbar'] = __scrollbarRule;
+    env.rules['s-transition'] = __transitionRule;
+    env.rules['s-radius'] = __radiusRule;
+    env.rules['s-fit'] = __fitRule;
+    env.rules['s-container'] = __containerRule;
+    env.rules['s-grid'] = __gridRule;
     let mixins = new Map();
     const visitors = {
         Function: {
@@ -137,8 +151,8 @@ export default function sugarcss(settings = {}) {
             [`s-radius`](v) {
                 return __radiusFunction(v, finalSettings);
             },
-            ['s-layout'](v) {
-                return __layoutFunction(v, finalSettings);
+            ['s-container'](v) {
+                return __containerFunction(v, finalSettings);
             },
         },
         Declaration: {
@@ -170,32 +184,61 @@ export default function sugarcss(settings = {}) {
                         return __transitionDeclaration(v, finalSettings);
                     case v.name.startsWith(`--s-radius-`):
                         return __radiusDeclaration(v, finalSettings);
+                    case v.name.startsWith(`--s-container-`):
+                        return __containerDeclaration(v, finalSettings);
+                    case v.name.startsWith(`--s-grid-`):
+                        return __gridDeclaration(v, finalSettings);
                 }
             },
         },
         Rule: {
             unknown(rule) {
-                switch (true) {
-                    case rule.name === `s-scrollbar`:
-                        return __scrollbarRule(rule, finalSettings);
-                    case rule.name === `s-transition`:
-                        return __transitionRule(rule, finalSettings);
-                    case rule.name === `s-radius`:
-                        return __radiusRule(rule, finalSettings);
+                try {
+                    switch (true) {
+                        case rule.name === `s-scrollbar`:
+                            return __scrollbarRule(rule, finalSettings);
+                        case rule.name === `s-transition`:
+                            return __transitionRule(rule, finalSettings);
+                        case rule.name === `s-radius`:
+                            return __radiusRule(rule, finalSettings);
+                        case rule.name === `s-fit`:
+                            return __fitRule(rule, finalSettings);
+                        case rule.name === `s-container`:
+                            return __containerRule(rule, finalSettings);
+                        case rule.name === `s-grid`:
+                            return __gridRule(rule, finalSettings);
+                    }
+                }
+                catch (e) {
+                    console.error(e);
                 }
             },
             custom: {
                 mixin(rule) {
+                    if (rule.prelude.value === 'log') {
+                        console.log(JSON.stringify(rule, null, 2));
+                    }
                     mixins.set(rule.prelude.value, rule.body.value);
                     return [];
                 },
-                apply(rule) {
-                    // console.log(JSON.stringify(mixins.get(rule.prelude.value), null, 2));
-                    return mixins.get(rule.prelude.value);
+                include(rule) {
+                    let ast = mixins.get(rule.prelude.value), newAst = [];
+                    if (!ast) {
+                        throw new Error(`Mixin ${rule.prelude.value} not found`);
+                    }
+                    // apply
+                    ast.forEach((rule) => {
+                        var _a;
+                        if (rule.type === 'unknown' && env.rules[(_a = rule.value) === null || _a === void 0 ? void 0 : _a.name]) {
+                            const newRuleAst = env.rules[rule.value.name](rule.value);
+                            newAst = [...newAst, ...newRuleAst];
+                        }
+                        else {
+                            newAst.push(rule);
+                        }
+                    });
+                    return newAst;
                 },
-                // 's-scrollbar'(rule) {
-                //   return __scrollbarRule(rule, finalSettings);
-                // },
             },
             media(rule) {
                 var _a;

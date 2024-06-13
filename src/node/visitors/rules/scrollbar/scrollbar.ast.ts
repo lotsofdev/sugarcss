@@ -1,5 +1,7 @@
 import { CssColor, Length } from 'lightningcss';
 
+import { env } from '../../../sugarcss.js';
+
 export default function (size: Length, thumb: CssColor, track: CssColor): any {
   return [
     {
@@ -22,7 +24,13 @@ export default function (size: Length, thumb: CssColor, track: CssColor): any {
           declarations: [
             {
               property: 'width',
-              value: size,
+              value: {
+                type: 'length-percentage',
+                value: {
+                  type: 'dimension',
+                  value: size.value,
+                },
+              },
             },
             {
               property: 'height',
@@ -30,10 +38,7 @@ export default function (size: Length, thumb: CssColor, track: CssColor): any {
                 type: 'length-percentage',
                 value: {
                   type: 'dimension',
-                  value: {
-                    unit: 'px',
-                    value: 10,
-                  },
+                  value: size.value,
                 },
               },
             },
@@ -66,8 +71,13 @@ export default function (size: Length, thumb: CssColor, track: CssColor): any {
           importantDeclarations: [],
           declarations: [
             {
-              property: 'background-color',
-              value: track,
+              property: 'unparsed',
+              value: {
+                propertyId: {
+                  property: 'background-color',
+                },
+                value: [track],
+              },
             },
           ],
         },
@@ -98,8 +108,13 @@ export default function (size: Length, thumb: CssColor, track: CssColor): any {
           importantDeclarations: [],
           declarations: [
             {
-              property: 'background-color',
-              value: thumb,
+              property: 'unparsed',
+              value: {
+                propertyId: {
+                  property: 'background-color',
+                },
+                value: [thumb],
+              },
             },
           ],
         },
