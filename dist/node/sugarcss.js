@@ -1,32 +1,33 @@
 import __colorDeclaration from './visitors/declarations/color.js';
+import __containerDeclaration from './visitors/declarations/container.js';
 import __easingsDeclaration from './visitors/declarations/easing.js';
 import __fontDeclaration from './visitors/declarations/font.js';
 import __fontFamilyDeclaration from './visitors/declarations/fontFamily.js';
+import __gridDeclaration from './visitors/declarations/grid.js';
 import __mediaDeclaration from './visitors/declarations/media.js';
 import __radiusDeclaration from './visitors/declarations/radius.js';
 import __settingDeclaration from './visitors/declarations/setting.js';
-import __containerDeclaration from './visitors/declarations/container.js';
 import __shadeDeclaration from './visitors/declarations/shade.js';
-import __gridDeclaration from './visitors/declarations/grid.js';
 import __sizesDeclaration from './visitors/declarations/sizes.js';
 import __spacesDeclaration from './visitors/declarations/spaces.js';
 import __transitionDeclaration from './visitors/declarations/transition.js';
 import __colorFunction from './visitors/functions/color.js';
+import __containerFunction from './visitors/functions/container.js';
 import __fontFunction from './visitors/functions/font.js';
 import __fontFamilyFunction from './visitors/functions/fontFamily.js';
 import __radiusFunction from './visitors/functions/radius.js';
 import __scalableFunction from './visitors/functions/scalable.js';
-import __containerFunction from './visitors/functions/container.js';
 import __sizeFunction from './visitors/functions/size.js';
 import __spaceFunction from './visitors/functions/space.js';
 import __transitionFunction from './visitors/functions/transition.js';
+import __containerRule from './visitors/rules/container.js';
+import __fitRule from './visitors/rules/fit.js';
+import __gridRule from './visitors/rules/grid.js';
+import __mapColorRule from './visitors/rules/mapColor.js';
 import __mediaRule from './visitors/rules/media.js';
 import __radiusRule from './visitors/rules/radius.js';
 import __scrollbarRule from './visitors/rules/scrollbar.js';
 import __transitionRule from './visitors/rules/transition.js';
-import __gridRule from './visitors/rules/grid.js';
-import __fitRule from './visitors/rules/fit.js';
-import __containerRule from './visitors/rules/container.js';
 import browserslist from 'browserslist';
 import { browserslistToTargets, composeVisitors, } from 'lightningcss';
 import { __parseHtml } from '@lotsof/sugar/console';
@@ -122,6 +123,7 @@ export default function sugarcss(settings = {}) {
     env.rules['s-transition'] = __transitionRule;
     env.rules['s-radius'] = __radiusRule;
     env.rules['s-fit'] = __fitRule;
+    env.rules['s-map-color'] = __mapColorRule;
     env.rules['s-container'] = __containerRule;
     env.rules['s-grid'] = __gridRule;
     let mixins = new Map();
@@ -205,6 +207,8 @@ export default function sugarcss(settings = {}) {
                             return __fitRule(rule, finalSettings);
                         case rule.name === `s-container`:
                             return __containerRule(rule, finalSettings);
+                        case rule.name === 's-map-color':
+                            return __mapColorRule(rule, finalSettings);
                         case rule.name === `s-grid`:
                             return __gridRule(rule, finalSettings);
                     }

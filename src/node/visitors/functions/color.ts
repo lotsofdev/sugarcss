@@ -1,3 +1,4 @@
+import __ensureColorExists from '../../ensure/colorExists.js';
 import { env } from '../../sugarcss.js';
 import { ISugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
@@ -54,11 +55,7 @@ export default function color(value: any, settings: ISugarCssSettings): any {
   let color = args.values.color,
     modifiers = args.values.modifiers;
 
-  if (!env.colors[color]) {
-    throw new Error(
-      `Color "${color}" not found. Please register it first like so: --s-color-${color}: ...;`,
-    );
-  }
+  __ensureColorExists(color);
 
   if (typeof modifiers === 'string') {
     if (!env.shades[`${modifiers}-${color}`] && !env.shades[modifiers]) {

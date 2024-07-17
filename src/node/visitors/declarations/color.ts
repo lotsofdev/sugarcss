@@ -34,7 +34,11 @@ import { __convert } from '@lotsof/sugar/color';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 export default function color(v, settings: ISugarCssSettings): any {
-  const name = v.name.replace(`--s-color-`, '');
+  const name = v.name.replace(`--s-color-`, '').replace(/\-[a-z]$/, '');
+
+  // if (env.colors[name]) {
+  //   return;
+  // }
 
   const result: any[] = [
     {

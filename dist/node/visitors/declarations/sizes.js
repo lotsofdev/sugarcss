@@ -33,14 +33,26 @@ export default function sizes(v, settings) {
     const args = __parseArgs(v.value, ['min', 'max', 'easing'], {
         separator: ['white-space', 'comma'],
     });
+    const result = [];
     let value = args.values;
     if (value.easing) {
         value.easing = __camelCase(value.easing);
     }
+    // save in config
     env.sizes = value;
+    // custom css variables
+    for (let [key, value] of Object.entries(args.ast)) {
+        result.push({
+            property: `--s-sizes-${key}`,
+            value: {
+                name: `--s-sizes-${key}`,
+                value: [value],
+            },
+        });
+    }
     if (settings.verbose) {
         console.log(`Registered sizes settings: <yellow>${JSON.stringify(env.sizes)}</yellow>`);
     }
-    return [];
+    return result;
 }
 //# sourceMappingURL=sizes.js.map

@@ -1,6 +1,5 @@
-import __ensureRadiusExists from '../../ensure/radiusExists.js';
-import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
+import __ensireRadiusExists from '../../ensure/radiusExists.js';
 /**
  * @name            s-radius
  * @namespace       css.function
@@ -32,8 +31,9 @@ export default function radius(value, settings) {
         separator: ['white-space', 'comma'],
     }));
     args.values = Object.assign({ name: 'default' }, args.values);
-    __ensureRadiusExists(args.values.name);
-    const radius = env.radiuses[args.values.name].ast;
-    return Object.values(radius);
+    __ensireRadiusExists(args.values.name);
+    return {
+        raw: `var(--s-radius-${args.values.name})`,
+    };
 }
 //# sourceMappingURL=radius.js.map

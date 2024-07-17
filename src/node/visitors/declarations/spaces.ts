@@ -37,12 +37,26 @@ export default function spaces(v, settings: ISugarCssSettings): any {
     separator: ['white-space', 'comma'],
   });
 
+  const result: any[] = [];
+
   let value = args.values;
   if (value.easing) {
     value.easing = __camelCase(value.easing);
   }
 
+  // save in config
   env.spaces = value;
+
+  // custom css variables
+  for (let [key, value] of Object.entries(args.ast)) {
+    result.push({
+      property: `--s-spaces-${key}`,
+      value: {
+        name: `--s-spaces-${key}`,
+        value: [value],
+      },
+    });
+  }
 
   if (settings.verbose) {
     console.log(
@@ -52,5 +66,5 @@ export default function spaces(v, settings: ISugarCssSettings): any {
     );
   }
 
-  return [];
+  return result;
 }

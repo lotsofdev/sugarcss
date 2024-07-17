@@ -1,5 +1,5 @@
-import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
+import __containerExists from '../../ensure/containerExists.js';
 /**
  * @name            s-container
  * @namespace       css.function
@@ -39,9 +39,7 @@ export default function container(value, settings) {
         separator: ['white-space', 'comma'],
     });
     args.values = Object.assign({ container: 'default', prop: 'width' }, args.values);
-    if (!env.containers[args.values.container]) {
-        throw new Error(`Sorry but the container <yellow>${args.values.container}</yellow> is not registered...`);
-    }
+    __containerExists(args.values.container);
     const props = [];
     switch (args.values.prop) {
         case 'minWidth':

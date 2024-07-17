@@ -32,7 +32,10 @@ import { __convert } from '@lotsof/sugar/color';
  */
 export default function color(v, settings) {
     var _a, _b;
-    const name = v.name.replace(`--s-color-`, '');
+    const name = v.name.replace(`--s-color-`, '').replace(/\-[a-z]$/, '');
+    // if (env.colors[name]) {
+    //   return;
+    // }
     const result = [
         {
             property: `--s-color-${name}`,

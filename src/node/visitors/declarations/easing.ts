@@ -32,9 +32,23 @@ export default function easing(v, settings: ISugarCssSettings): any {
       separator: ['white-space', 'comma'],
     });
 
+  const result: any[] = [];
+
+  // save in env
   env.easings[name] = {
     function: args.values.function,
   };
+
+  // custom css variables
+  if (args.ast.function) {
+    result.push({
+      property: `--s-easing-${name}`,
+      value: {
+        name: `--s-easing-${name}`,
+        value: [args.ast.function],
+      },
+    });
+  }
 
   if (settings.verbose) {
     console.log(
@@ -44,5 +58,5 @@ export default function easing(v, settings: ISugarCssSettings): any {
     );
   }
 
-  return [];
+  return result;
 }

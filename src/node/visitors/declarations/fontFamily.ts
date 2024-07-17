@@ -33,11 +33,43 @@ import __parseArgs from '../../utils/parseArgs.js';
 export default function fontFamily(v, settings: ISugarCssSettings): any {
   const name = v.name.replace(`--s-font-family-`, '');
 
-  const args = __parseArgs(v.value, [name], {
+  const args = __parseArgs(v.value, [], {
     separator: ['white-space', 'comma'],
   });
 
+  const result: any[] = [];
+
+  // save in env
   env.fonts.family[name] = Object.values(args.values);
+
+  const tokens: any[] = [];
+
+  for (let [key, value] of Object.entries(args.values)) {
+    tokens.push({
+      type: 'token',
+      value: {
+        type: 'ident',
+        value: value,
+      },
+    });
+    tokens.push({
+      type: 'token',
+      value: {
+        type: 'comma',
+      },
+    });
+  }
+
+  // custom css variables
+  for (let [key, value] of Object.entries(args.values)) {
+    result.push({
+      property: `--s-font-family-${name}-${key}`,
+      value: {
+        name: `--s-font-family-${name}-${key}`,
+        value: tokens,
+      },
+    });
+  }
 
   if (settings.verbose) {
     console.log(
@@ -47,5 +79,5 @@ export default function fontFamily(v, settings: ISugarCssSettings): any {
     );
   }
 
-  return [];
+  return;
 }

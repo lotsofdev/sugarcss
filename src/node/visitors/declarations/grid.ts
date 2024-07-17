@@ -34,6 +34,9 @@ export default function grid(v, settings: ISugarCssSettings): any {
       separator: [],
     });
 
+  const result: any[] = [];
+
+  // save in env
   if (!env.grids[name]) {
     env.grids[name] = {
       layout: args.values.layout,
@@ -41,6 +44,22 @@ export default function grid(v, settings: ISugarCssSettings): any {
       ast: args.ast,
     };
   }
+
+  // custom css variables
+  result.push({
+    property: `--s-grid-${name}-layout`,
+    value: {
+      name: `--s-grid-${name}-layout`,
+      value: [args.ast.layout],
+    },
+  });
+  result.push({
+    property: `--s-grid-${name}-gap`,
+    value: {
+      name: `--s-grid-${name}-gap`,
+      value: [args.ast.gap],
+    },
+  });
 
   if (settings.verbose) {
     const displayLayout = Object.assign({}, env.grids[name]);
@@ -52,5 +71,5 @@ export default function grid(v, settings: ISugarCssSettings): any {
     );
   }
 
-  return [];
+  return result;
 }

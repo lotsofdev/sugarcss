@@ -69,12 +69,16 @@ export default function font(value: any, settings: ISugarCssSettings): any {
   }
 
   const props: (string | number)[] = [];
-  props.push(fontArgs.style ?? 'normal');
-  props.push(fontArgs.variant ?? 'normal');
-  props.push(fontArgs.weight ?? 'normal');
-  props.push(fontArgs.stretch ?? 'normal');
-  props.push(`${size}/${lineHeight}`);
-  props.push(fontArgs.family ?? 'sans-serif');
+
+  props.push(`var(--s-font-${args.values.name}-style, normal)`);
+  props.push(`var(--s-font-${args.values.name}-variant, normal)`);
+  props.push(`var(--s-font-${args.values.name}-weight, normal)`);
+  // props.push(`var(--s-font-${args.values.name}-stretch)`);
+  props.push(
+    `var(--s-font-${args.values.name}-size, ${size})/var(--s-font-${args.values.name}-line-height, ${lineHeight})`,
+  );
+  props.push(`var(--s-font-${args.values.name}-family, sans-serif)`);
+
   return {
     raw: props.join(' '),
   };

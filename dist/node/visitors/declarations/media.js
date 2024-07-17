@@ -41,14 +41,34 @@ export default function media(v, settings) {
     const media = v.name.replace(`--s-media-`, ''), args = __parseArgs(v.value, ['min', 'max'], {
         separator: ['white-space', 'comma'],
     });
+    const result = [];
     if (!env.medias[media]) {
         env.medias[media] = {};
     }
     env.medias[media].min = (_a = args.values.min) !== null && _a !== void 0 ? _a : 0;
     env.medias[media].max = (_b = args.values.max) !== null && _b !== void 0 ? _b : 0;
+    // set new css variables
+    if (args.ast.min) {
+        result.push({
+            property: `--s-media-${media}-min`,
+            value: {
+                name: `--s-media-${media}-min`,
+                value: [args.ast.min],
+            },
+        });
+    }
+    if (args.ast.max) {
+        result.push({
+            property: `--s-media-${media}-max`,
+            value: {
+                name: `--s-media-${media}-max`,
+                value: [args.ast.max],
+            },
+        });
+    }
     if (settings.verbose) {
         console.log(`Registered media: <cyan>${media}</cyan>: <yellow>${JSON.stringify(env.medias[media])}</yellow>`);
     }
-    return [];
+    return result;
 }
 //# sourceMappingURL=media.js.map

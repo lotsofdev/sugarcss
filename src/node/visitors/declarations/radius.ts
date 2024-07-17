@@ -2,6 +2,8 @@ import { env } from '../../sugarcss.js';
 import { ISugarCssRadius, ISugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
+import { __dashCase } from '@lotsof/sugar/string';
+
 /**
  * @name            s-radius
  * @namespace       css.declaration
@@ -40,6 +42,8 @@ export default function radius(v, settings: ISugarCssSettings): any {
     args = __parseArgs(v.value, [], {
       separator: ['white-space', 'comma'],
     });
+
+  const result: any[] = [];
 
   const values: ISugarCssRadius = {
     topLeft: 0,
@@ -80,7 +84,46 @@ export default function radius(v, settings: ISugarCssSettings): any {
     );
   }
 
+  // save in env
   env.radiuses[name] = values;
+
+  // custom css variables
+  ['topLeft', 'topRight', 'bottomRight', 'bottomLeft'].forEach((corner) => {
+    result.push({
+      property: `--s-radius-${name}-${__dashCase(corner)}`,
+      value: {
+        name: `--s-radius-${name}-${__dashCase(corner)}`,
+        value: [
+          {
+            type: 'length',
+            value: {
+              unit: 'px',
+              value: values[corner],
+            },
+          },
+        ],
+      },
+    });
+  });
+
+  // const corners = ['topLeft', 'topRight', 'bottomRight', 'bottomLeft'].map(
+  //   (corner) => {
+  //     return {
+  //       type: 'length',
+  //       value: {
+  //         unit: 'px',
+  //         value: values[corner],
+  //       },
+  //     };
+  //   },
+  // );
+  // result.push({
+  //   property: `--s-radius-${name}`,
+  //   value: {
+  //     name: `--s-radius-${name}`,
+  //     value: corners,
+  //   },
+  // });
 
   const displayValues = {
     ...values,
@@ -95,5 +138,5 @@ export default function radius(v, settings: ISugarCssSettings): any {
     );
   }
 
-  return [];
+  return result;
 }

@@ -33,14 +33,26 @@ export default function spaces(v, settings) {
     const args = __parseArgs(v.value, ['min', 'max', 'easing'], {
         separator: ['white-space', 'comma'],
     });
+    const result = [];
     let value = args.values;
     if (value.easing) {
         value.easing = __camelCase(value.easing);
     }
+    // save in config
     env.spaces = value;
+    // custom css variables
+    for (let [key, value] of Object.entries(args.ast)) {
+        result.push({
+            property: `--s-spaces-${key}`,
+            value: {
+                name: `--s-spaces-${key}`,
+                value: [value],
+            },
+        });
+    }
     if (settings.verbose) {
         console.log(`Registered spaces settings: <yellow>${JSON.stringify(env.spaces)}</yellow>`);
     }
-    return [];
+    return result;
 }
 //# sourceMappingURL=spaces.js.map

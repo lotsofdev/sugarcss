@@ -45,12 +45,35 @@ export default function media(v, settings: ISugarCssSettings): any {
       separator: ['white-space', 'comma'],
     });
 
+  const result: any[] = [];
+
   if (!env.medias[media]) {
     env.medias[media] = {};
   }
 
   env.medias[media].min = args.values.min ?? 0;
   env.medias[media].max = args.values.max ?? 0;
+
+  // set new css variables
+  if (args.ast.min) {
+    result.push({
+      property: `--s-media-${media}-min`,
+      value: {
+        name: `--s-media-${media}-min`,
+        value: [args.ast.min],
+      },
+    });
+  }
+
+  if (args.ast.max) {
+    result.push({
+      property: `--s-media-${media}-max`,
+      value: {
+        name: `--s-media-${media}-max`,
+        value: [args.ast.max],
+      },
+    });
+  }
 
   if (settings.verbose) {
     console.log(
@@ -60,5 +83,5 @@ export default function media(v, settings: ISugarCssSettings): any {
     );
   }
 
-  return [];
+  return result;
 }

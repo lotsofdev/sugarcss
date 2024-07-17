@@ -1,8 +1,7 @@
-import { env } from '../../sugarcss.js';
 import { ISugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
-import __ensureFontExists from '../../ensure/fontExists.js';
+import __containerExists from '../../ensure/containerExists.js';
 
 /**
  * @name            s-container
@@ -51,11 +50,7 @@ export default function container(
     ...args.values,
   };
 
-  if (!env.containers[args.values.container]) {
-    throw new Error(
-      `Sorry but the container <yellow>${args.values.container}</yellow> is not registered...`,
-    );
-  }
+  __containerExists(args.values.container);
 
   const props: string[] = [];
 

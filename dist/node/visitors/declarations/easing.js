@@ -28,12 +28,24 @@ export default function easing(v, settings) {
     const name = v.name.replace(`--s-easing-`, ''), args = __parseArgs(v.value, ['function'], {
         separator: ['white-space', 'comma'],
     });
+    const result = [];
+    // save in env
     env.easings[name] = {
         function: args.values.function,
     };
+    // custom css variables
+    if (args.ast.function) {
+        result.push({
+            property: `--s-easing-${name}`,
+            value: {
+                name: `--s-easing-${name}`,
+                value: [args.ast.function],
+            },
+        });
+    }
     if (settings.verbose) {
         console.log(`Registered easing: <cyan>${name}</cyan>: <yellow>${JSON.stringify(args.values)}</yellow>`);
     }
-    return [];
+    return result;
 }
 //# sourceMappingURL=easing.js.map

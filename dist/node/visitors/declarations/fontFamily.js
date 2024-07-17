@@ -29,13 +29,41 @@ import __parseArgs from '../../utils/parseArgs.js';
  */
 export default function fontFamily(v, settings) {
     const name = v.name.replace(`--s-font-family-`, '');
-    const args = __parseArgs(v.value, [name], {
+    const args = __parseArgs(v.value, [], {
         separator: ['white-space', 'comma'],
     });
+    const result = [];
+    // save in env
     env.fonts.family[name] = Object.values(args.values);
+    const tokens = [];
+    for (let [key, value] of Object.entries(args.values)) {
+        tokens.push({
+            type: 'token',
+            value: {
+                type: 'ident',
+                value: value,
+            },
+        });
+        tokens.push({
+            type: 'token',
+            value: {
+                type: 'comma',
+            },
+        });
+    }
+    // custom css variables
+    for (let [key, value] of Object.entries(args.values)) {
+        result.push({
+            property: `--s-font-family-${name}-${key}`,
+            value: {
+                name: `--s-font-family-${name}-${key}`,
+                value: tokens,
+            },
+        });
+    }
     if (settings.verbose) {
         console.log(`Registered font family argument: <cyan>${name}</cyan>: <yellow>${JSON.stringify(env.fonts.family[name])}</yellow>`);
     }
-    return [];
+    return;
 }
 //# sourceMappingURL=fontFamily.js.map

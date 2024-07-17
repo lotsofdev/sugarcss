@@ -1,5 +1,6 @@
 import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
+import { __dashCase } from '@lotsof/sugar/string';
 /**
  * @name            s-radius
  * @namespace       css.declaration
@@ -36,6 +37,7 @@ export default function radius(v, settings) {
     const name = v.name.replace(`--s-radius-`, ''), args = __parseArgs(v.value, [], {
         separator: ['white-space', 'comma'],
     });
+    const result = [];
     const values = {
         topLeft: 0,
         topRight: 0,
@@ -72,12 +74,49 @@ export default function radius(v, settings) {
     else {
         throw new Error(`Invalid number of arguments for radius: ${args.values.length}. Either 1 value applied on all corners, or 4 values, 1 for each corner.`);
     }
+    // save in env
     env.radiuses[name] = values;
+    // custom css variables
+    ['topLeft', 'topRight', 'bottomRight', 'bottomLeft'].forEach((corner) => {
+        result.push({
+            property: `--s-radius-${name}-${__dashCase(corner)}`,
+            value: {
+                name: `--s-radius-${name}-${__dashCase(corner)}`,
+                value: [
+                    {
+                        type: 'length',
+                        value: {
+                            unit: 'px',
+                            value: values[corner],
+                        },
+                    },
+                ],
+            },
+        });
+    });
+    // const corners = ['topLeft', 'topRight', 'bottomRight', 'bottomLeft'].map(
+    //   (corner) => {
+    //     return {
+    //       type: 'length',
+    //       value: {
+    //         unit: 'px',
+    //         value: values[corner],
+    //       },
+    //     };
+    //   },
+    // );
+    // result.push({
+    //   property: `--s-radius-${name}`,
+    //   value: {
+    //     name: `--s-radius-${name}`,
+    //     value: corners,
+    //   },
+    // });
     const displayValues = Object.assign({}, values);
     delete displayValues.ast;
     if (settings.verbose) {
         console.log(`Registered radius: <cyan>${name}</cyan>: <yellow>${JSON.stringify(displayValues)}</yellow>`);
     }
-    return [];
+    return result;
 }
 //# sourceMappingURL=radius.js.map

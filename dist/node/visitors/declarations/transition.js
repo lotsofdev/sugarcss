@@ -35,10 +35,22 @@ export default function transition(v, settings) {
     const name = v.name.replace(`--s-transition-`, ''), args = __parseArgs(v.value, ['property', 'duration', 'easing', 'delay', 'behavior'], {
         separator: ['white-space', 'comma'],
     });
+    const result = [];
+    // save in env
     env.transitions[name] = Object.assign(Object.assign({}, args.values), { ast: v });
+    // custom css variables
+    for (let [key, value] of Object.entries(args.ast)) {
+        result.push({
+            property: `--s-transition-${name}-${key}`,
+            value: {
+                name: `--s-transition-${name}-${key}`,
+                value: [value],
+            },
+        });
+    }
     if (settings.verbose) {
         console.log(`Registered transition: <cyan>${name}</cyan>: <yellow>${JSON.stringify(args.values)}</yellow>`);
     }
-    return [];
+    return result;
 }
 //# sourceMappingURL=transition.js.map

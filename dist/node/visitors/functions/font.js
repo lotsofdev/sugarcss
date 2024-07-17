@@ -37,7 +37,6 @@ import __ensureFontExists from '../../ensure/fontExists.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 export default function font(value, settings) {
-    var _a, _b, _c, _d, _e;
     const args = __parseArgs(value.arguments, ['name'], {
         separator: ['white-space', 'comma'],
     });
@@ -63,12 +62,12 @@ export default function font(value, settings) {
         }
     }
     const props = [];
-    props.push((_a = fontArgs.style) !== null && _a !== void 0 ? _a : 'normal');
-    props.push((_b = fontArgs.variant) !== null && _b !== void 0 ? _b : 'normal');
-    props.push((_c = fontArgs.weight) !== null && _c !== void 0 ? _c : 'normal');
-    props.push((_d = fontArgs.stretch) !== null && _d !== void 0 ? _d : 'normal');
-    props.push(`${size}/${lineHeight}`);
-    props.push((_e = fontArgs.family) !== null && _e !== void 0 ? _e : 'sans-serif');
+    props.push(`var(--s-font-${args.values.name}-style, normal)`);
+    props.push(`var(--s-font-${args.values.name}-variant, normal)`);
+    props.push(`var(--s-font-${args.values.name}-weight, normal)`);
+    // props.push(`var(--s-font-${args.values.name}-stretch)`);
+    props.push(`var(--s-font-${args.values.name}-size, ${size})/var(--s-font-${args.values.name}-line-height, ${lineHeight})`);
+    props.push(`var(--s-font-${args.values.name}-family, sans-serif)`);
     return {
         raw: props.join(' '),
     };

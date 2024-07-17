@@ -29,6 +29,8 @@ export default function grid(v, settings) {
     const name = v.name.replace(`--s-grid-`, ''), args = __parseArgs(v.value, ['layout', 'gap', 'align', 'justify'], {
         separator: [],
     });
+    const result = [];
+    // save in env
     if (!env.grids[name]) {
         env.grids[name] = {
             layout: args.values.layout,
@@ -36,11 +38,26 @@ export default function grid(v, settings) {
             ast: args.ast,
         };
     }
+    // custom css variables
+    result.push({
+        property: `--s-grid-${name}-layout`,
+        value: {
+            name: `--s-grid-${name}-layout`,
+            value: [args.ast.layout],
+        },
+    });
+    result.push({
+        property: `--s-grid-${name}-gap`,
+        value: {
+            name: `--s-grid-${name}-gap`,
+            value: [args.ast.gap],
+        },
+    });
     if (settings.verbose) {
         const displayLayout = Object.assign({}, env.grids[name]);
         delete displayLayout.ast;
         console.log(`Registered grid <cyan>${name}</cyan>: <yellow>${JSON.stringify(displayLayout)}</yellow>`);
     }
-    return [];
+    return result;
 }
 //# sourceMappingURL=grid.js.map

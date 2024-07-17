@@ -1,5 +1,4 @@
 import __ensureFontFamilyExists from '../../ensure/fontFamilyExists.js';
-import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
 /**
  * @name            s-font-family
@@ -29,12 +28,10 @@ export default function fontFamily(value, settings) {
     const args = __parseArgs(value.arguments, ['name'], {
         separator: ['white-space', 'comma'],
     });
-    const fontFamilyArgs = env.fonts.family;
     // protect against invalid fonts
     __ensureFontFamilyExists(args.values.name);
-    const families = fontFamilyArgs[args.values.name];
     return {
-        raw: `${families.join(',')}`,
+        raw: `var(--s-font-family-${args.values.name})`,
     };
 }
 //# sourceMappingURL=fontFamily.js.map

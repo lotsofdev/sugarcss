@@ -37,10 +37,30 @@ import __parseArgs from '../../utils/parseArgs.js';
 export default function share(v, settings) {
     const shade = v.name.replace(`--s-shade-`, '');
     const args = __parseArgs(v.value, ['modifiers']);
+    const result = [];
+    // save in config
     env.shades[shade] = args.values.modifiers;
+    // custom css variables
+    for (let [key, value] of Object.entries(args.values.modifiers)) {
+        result.push({
+            property: `--s-shade-${shade}-${key}`,
+            value: {
+                name: `--s-shade-${shade}-${key}`,
+                value: [
+                    {
+                        type: 'token',
+                        value: {
+                            type: 'number',
+                            value: value,
+                        },
+                    },
+                ],
+            },
+        });
+    }
     if (settings.verbose) {
         console.log(`Registered shade: <cyan>${shade}</cyan>: <yellow>${JSON.stringify(args.values.modifiers, null)}</yellow>`);
     }
-    return [];
+    return result;
 }
 //# sourceMappingURL=shade.js.map

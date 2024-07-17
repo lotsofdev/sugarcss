@@ -44,10 +44,24 @@ export default function transition(v, settings: ISugarCssSettings): any {
       },
     );
 
+  const result: any[] = [];
+
+  // save in env
   env.transitions[name] = {
     ...args.values,
     ast: v,
   };
+
+  // custom css variables
+  for (let [key, value] of Object.entries(args.ast)) {
+    result.push({
+      property: `--s-transition-${name}-${key}`,
+      value: {
+        name: `--s-transition-${name}-${key}`,
+        value: [value],
+      },
+    });
+  }
 
   if (settings.verbose) {
     console.log(
@@ -57,5 +71,5 @@ export default function transition(v, settings: ISugarCssSettings): any {
     );
   }
 
-  return [];
+  return result;
 }
