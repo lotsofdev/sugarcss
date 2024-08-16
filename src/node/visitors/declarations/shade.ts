@@ -1,6 +1,6 @@
 import { env } from '../../sugarcss.js';
 
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 /**
@@ -38,7 +38,7 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function share(v, settings: ISugarCssSettings): any {
+export default function share(v, settings: TSugarCssSettings): any {
   const shade = v.name.replace(`--s-shade-`, '');
   const args = __parseArgs(v.value, ['modifiers']);
 

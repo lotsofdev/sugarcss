@@ -1,4 +1,4 @@
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 /**
  * @name            s-fit
  * @namespace       css.rule
@@ -26,4 +26,4 @@ import { ISugarCssSettings } from '../../sugarcss.types.js';
  * @since           0.0.1
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
-export default function fit(v: any, settings: ISugarCssSettings): any;
+export default function fit(v: any, settings: TSugarCssSettings): any;

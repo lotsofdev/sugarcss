@@ -1,5 +1,5 @@
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 import __argsToCustomPropertiesAst from '../../utils/argsToCustomPropertiesAst.js';
@@ -38,7 +38,7 @@ import __argsToCustomPropertiesAst from '../../utils/argsToCustomPropertiesAst.j
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function font(v, settings: ISugarCssSettings): any {
+export default function font(v, settings: TSugarCssSettings): any {
   const name = v.name.replace(`--s-font-`, '');
   const args = __parseArgs(v.value, [
     'family',

@@ -1,5 +1,5 @@
 import __ensureFontFamilyExists from '../../ensure/fontFamilyExists.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 /**
@@ -28,7 +28,7 @@ import __parseArgs from '../../utils/parseArgs.js';
  */
 export default function fontFamily(
   value: any,
-  settings: ISugarCssSettings,
+  settings: TSugarCssSettings,
 ): any {
   const args = __parseArgs(value.arguments, ['name'], {
     separator: ['white-space', 'comma'],

@@ -1,5 +1,5 @@
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings, ISugarCssGrid } from '../../sugarcss.types.js';
+import { TSugarCssGrid, TSugarCssSettings } from '../../sugarcss.types.js';
 
 import __gridAst from './grid/grid.ast.js';
 
@@ -37,7 +37,7 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function grid(v: any, settings: ISugarCssSettings): any {
+export default function grid(v: any, settings: TSugarCssSettings): any {
   // parse args
   const args = {
     ...__parseArgs(v.prelude, ['layout', 'gap'], {
@@ -46,7 +46,7 @@ export default function grid(v: any, settings: ISugarCssSettings): any {
   };
 
   // grid
-  let grid: ISugarCssGrid = args.values;
+  let grid: TSugarCssGrid = args.values;
   if (env.grids[args.values.layout]) {
     grid = env.grids[args.values.layout];
   }

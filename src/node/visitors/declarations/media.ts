@@ -1,5 +1,5 @@
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 /**
@@ -39,7 +39,7 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function media(v, settings: ISugarCssSettings): any {
+export default function media(v, settings: TSugarCssSettings): any {
   const media = v.name.replace(`--s-media-`, ''),
     args = __parseArgs(v.value, ['min', 'max'], {
       separator: ['white-space', 'comma'],

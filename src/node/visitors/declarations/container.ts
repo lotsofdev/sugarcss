@@ -1,7 +1,7 @@
-import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
-import __parseArgs from '../../utils/parseArgs.js';
 import { __dashCase } from '@lotsof/sugar/string';
+import { env } from '../../sugarcss.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
+import __parseArgs from '../../utils/parseArgs.js';
 
 /**
  * @name            s-container
@@ -29,7 +29,7 @@ import { __dashCase } from '@lotsof/sugar/string';
  * @since           0.0.1
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
-export default function container(v, settings: ISugarCssSettings): any {
+export default function container(v, settings: TSugarCssSettings): any {
   const name = v.name.replace(`--s-container-`, ''),
     args = __parseArgs(v.value, ['minWidth', 'maxWidth', 'sidePadding'], {
       separator: ['white-space', 'comma'],

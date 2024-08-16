@@ -1,4 +1,4 @@
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 /**
  * @name            s-font-family
  * @namespace       css.declaration
@@ -26,4 +26,4 @@ import { ISugarCssSettings } from '../../sugarcss.types.js';
  * @since           0.0.1
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
-export default function fontFamily(v: any, settings: ISugarCssSettings): any;
+export default function fontFamily(v: any, settings: TSugarCssSettings): any;

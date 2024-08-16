@@ -1,5 +1,5 @@
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 /**
@@ -26,7 +26,7 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @since           0.0.1
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
-export default function easing(v, settings: ISugarCssSettings): any {
+export default function easing(v, settings: TSugarCssSettings): any {
   const name = v.name.replace(`--s-easing-`, ''),
     args = __parseArgs(v.value, ['function'], {
       separator: ['white-space', 'comma'],

@@ -1,9 +1,9 @@
-export interface IParseArgsResult {
+export type TParseArgsResult = {
     ast: any;
     values: any;
-}
-export interface IParseArgsSettings {
+};
+export type TParseArgsSettings = {
     separator: string | string[];
     resolve: boolean;
-}
-export default function parseArgs(args: any[], schema?: string[], settings?: Partial<IParseArgsSettings>): IParseArgsResult;
+};
+export default function parseArgs(args: any[], schema?: string[], settings?: Partial<TParseArgsSettings>): TParseArgsResult;

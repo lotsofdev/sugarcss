@@ -1,5 +1,5 @@
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 
-export default function scale(v, settings: ISugarCssSettings): any {
+export default function scale(v, settings: TSugarCssSettings): any {
   // console.log(v);
 }

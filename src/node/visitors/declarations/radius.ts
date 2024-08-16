@@ -1,5 +1,5 @@
 import { env } from '../../sugarcss.js';
-import { ISugarCssRadius, ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssRadius, TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 import { __dashCase } from '@lotsof/sugar/string';
@@ -37,7 +37,7 @@ import { __dashCase } from '@lotsof/sugar/string';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function radius(v, settings: ISugarCssSettings): any {
+export default function radius(v, settings: TSugarCssSettings): any {
   const name = v.name.replace(`--s-radius-`, ''),
     args = __parseArgs(v.value, [], {
       separator: ['white-space', 'comma'],
@@ -45,7 +45,7 @@ export default function radius(v, settings: ISugarCssSettings): any {
 
   const result: any[] = [];
 
-  const values: ISugarCssRadius = {
+  const values: TSugarCssRadius = {
     topLeft: 0,
     topRight: 0,
     bottomRight: 0,

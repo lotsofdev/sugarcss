@@ -1,6 +1,6 @@
+import { __dashCase } from '@lotsof/sugar/string';
 import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
-import { __dashCase } from '@lotsof/sugar/string';
 /**
  * @name            s-container
  * @namespace       css.declaration

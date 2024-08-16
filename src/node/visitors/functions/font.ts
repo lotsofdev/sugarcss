@@ -1,5 +1,5 @@
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 import __ensureFontExists from '../../ensure/fontExists.js';
@@ -39,7 +39,7 @@ import __ensureFontExists from '../../ensure/fontExists.js';
  * @since           0.0.1
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
-export default function font(value: any, settings: ISugarCssSettings): any {
+export default function font(value: any, settings: TSugarCssSettings): any {
   const args = __parseArgs(value.arguments, ['name'], {
     separator: ['white-space', 'comma'],
   });

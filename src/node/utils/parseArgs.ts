@@ -4,22 +4,22 @@ import __toString from './toString.js';
 
 import __parsedArgsToRawValues from './parsedArgsToRawValues.js';
 
-export interface IParseArgsResult {
+export type TParseArgsResult = {
   ast: any;
   values: any;
-}
+};
 
-export interface IParseArgsSettings {
+export type TParseArgsSettings = {
   separator: string | string[];
   resolve: boolean;
-}
+};
 
 export default function parseArgs(
   args: any[],
   schema: string[] = [],
-  settings?: Partial<IParseArgsSettings>,
-): IParseArgsResult {
-  const finalSettings: IParseArgsSettings = {
+  settings?: Partial<TParseArgsSettings>,
+): TParseArgsResult {
+  const finalSettings: TParseArgsSettings = {
     separator: ['comma', 'white-space'],
     resolve: true,
     ...(settings ?? {}),

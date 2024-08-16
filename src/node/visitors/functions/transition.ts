@@ -1,5 +1,5 @@
 import __ensureTransitionExists from '../../ensure/transitionExists.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 /**
@@ -31,7 +31,7 @@ import __parseArgs from '../../utils/parseArgs.js';
 
 export default function transition(
   value: any,
-  settings: ISugarCssSettings,
+  settings: TSugarCssSettings,
 ): any {
   const args = {
     ...__parseArgs(value.arguments, ['name'], {

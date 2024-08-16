@@ -1,7 +1,7 @@
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
-export default function scalable(value: any, settings: ISugarCssSettings): any {
+export default function scalable(value: any, settings: TSugarCssSettings): any {
   const args = __parseArgs(value.arguments);
 
   const result = {

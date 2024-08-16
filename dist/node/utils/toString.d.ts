@@ -1,4 +1,4 @@
-export interface IToStringSettings {
+export type TToStringSettings = {
     numberFixed: number;
-}
-export default function toString(value: any, settings?: IToStringSettings): string;
+};
+export default function toString(value: any, settings?: TToStringSettings): string;

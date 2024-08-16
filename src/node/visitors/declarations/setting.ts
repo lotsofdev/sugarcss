@@ -1,6 +1,6 @@
 import { __camelCase, __parse } from '@lotsof/sugar/string';
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 /**
@@ -24,7 +24,7 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function setting(v, settings: ISugarCssSettings): any {
+export default function setting(v, settings: TSugarCssSettings): any {
   const name = __camelCase(v.name.replace(`--s-setting-`, '')),
     args = __parseArgs(v.value, ['value'], {
       separator: ['white-space', 'comma'],

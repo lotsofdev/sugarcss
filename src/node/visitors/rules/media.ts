@@ -1,5 +1,5 @@
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 
 /**
  * @name            s-media
@@ -51,7 +51,7 @@ import { ISugarCssSettings } from '../../sugarcss.types.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function media(v: any, settings: ISugarCssSettings): any {
+export default function media(v: any, settings: TSugarCssSettings): any {
   const possibleMedias: string[] = [];
   ['lt-', 'lte-', 'e-', 'gt-', 'gte-', ''].forEach((operator) => {
     for (let [media, mediaArgs] of Object.entries(env.medias)) {

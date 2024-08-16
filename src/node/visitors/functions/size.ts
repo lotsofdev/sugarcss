@@ -1,5 +1,5 @@
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 import __ensureEasingFunctionExists from '../../ensure/easingFunctionExists.js';
@@ -32,7 +32,7 @@ import __ensureEasingFunctionExists from '../../ensure/easingFunctionExists.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function size(value: any, settings: ISugarCssSettings): any {
+export default function size(value: any, settings: TSugarCssSettings): any {
   const args = __parseArgs(value.arguments, [], {
     separator: ['white-space', 'comma'],
   });

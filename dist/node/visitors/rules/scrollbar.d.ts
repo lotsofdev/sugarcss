@@ -1,4 +1,4 @@
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 /**
  * @name            s-scrollbar
  * @namespace       css.rule
@@ -24,4 +24,4 @@ import { ISugarCssSettings } from '../../sugarcss.types.js';
  * @since           0.0.1
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
-export default function scrollbar(v: any, settings: ISugarCssSettings): any;
+export default function scrollbar(v: any, settings: TSugarCssSettings): any;

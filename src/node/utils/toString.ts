@@ -1,12 +1,12 @@
-export interface IToStringSettings {
+export type TToStringSettings = {
   numberFixed: number;
-}
+};
 
 export default function toString(
   value: any,
-  settings?: IToStringSettings,
+  settings?: TToStringSettings,
 ): string {
-  const finalSettings: IToStringSettings = {
+  const finalSettings: TToStringSettings = {
     numberFixed: 3,
     ...(settings ?? {}),
   };

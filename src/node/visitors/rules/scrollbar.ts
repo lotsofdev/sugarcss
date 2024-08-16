@@ -1,4 +1,4 @@
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 import __hideAst from './scrollbar/hide.ast.js';
 import __scrollbarAst from './scrollbar/scrollbar.ast.js';
@@ -29,7 +29,7 @@ import __scrollbarAst from './scrollbar/scrollbar.ast.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function scrollbar(v: any, settings: ISugarCssSettings): any {
+export default function scrollbar(v: any, settings: TSugarCssSettings): any {
   // parse args
   const args = __parseArgs(v.prelude);
 

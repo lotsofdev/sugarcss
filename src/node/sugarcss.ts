@@ -1,4 +1,4 @@
-import { ISugarCssEnv, ISugarCssSettings } from './sugarcss.types.js';
+import { TSugarCssEnv, TSugarCssSettings } from './sugarcss.types.js';
 
 import __colorDeclaration from './visitors/declarations/color.js';
 import __containerDeclaration from './visitors/declarations/container.js';
@@ -40,7 +40,7 @@ import {
 
 import { __parseHtml } from '@lotsof/sugar/console';
 
-export const env: ISugarCssEnv = {
+export const env: TSugarCssEnv = {
   functions: {},
   rules: {},
   settings: {
@@ -100,7 +100,7 @@ console.log = (...args): void => {
 
 export function sugarize(
   ligningcss: TransformOptions<any>,
-  settings?: Partial<ISugarCssSettings>,
+  settings?: Partial<TSugarCssSettings>,
 ): any {
   const visitor = [sugarcss(settings)];
   if (ligningcss?.visitor) {
@@ -142,9 +142,9 @@ export function sugarize(
 }
 
 export default function sugarcss(
-  settings: Partial<ISugarCssSettings> = {},
+  settings: Partial<TSugarCssSettings> = {},
 ): any {
-  const finalSettings: ISugarCssSettings = {
+  const finalSettings: TSugarCssSettings = {
     ...env.settings,
     ...settings,
   };

@@ -1,4 +1,4 @@
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 import __ensureColorExists from '../../ensure/colorExists.js';
@@ -36,7 +36,7 @@ import __ensureColorExists from '../../ensure/colorExists.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function color(v: any, settings: ISugarCssSettings): any {
+export default function color(v: any, settings: TSugarCssSettings): any {
   // parse args
   const args = {
     ...__parseArgs(v.prelude, ['name', 'to']),

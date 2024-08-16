@@ -1,4 +1,4 @@
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 import __containerExists from '../../ensure/containerExists.js';
@@ -39,7 +39,7 @@ import __containerExists from '../../ensure/containerExists.js';
  */
 export default function container(
   value: any,
-  settings: ISugarCssSettings,
+  settings: TSugarCssSettings,
 ): any {
   const args = __parseArgs(value.arguments, ['prop', 'container'], {
     separator: ['white-space', 'comma'],

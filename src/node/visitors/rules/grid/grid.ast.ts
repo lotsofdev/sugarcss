@@ -1,6 +1,4 @@
-import type { ISugarCssGrid } from '../../../sugarcss.types.js';
-
-export interface ISugarCssGridAstArgs {
+export type TSugarCssGridAstArgs = {
   cols: string[];
   areas: string[];
   colsStartByArea: Record<string, number>;
@@ -8,9 +6,9 @@ export interface ISugarCssGridAstArgs {
   rowsStartByArea: Record<string, number>;
   rowsEndByArea: Record<string, number>;
   gap: any;
-}
+};
 
-export default function gridAst(gridArgs: ISugarCssGridAstArgs) {
+export default function gridAst(gridArgs: TSugarCssGridAstArgs) {
   const a = {
     type: 'style',
     value: {

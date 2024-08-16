@@ -1,4 +1,4 @@
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 /**
  * @name            s-spaces
  * @namespace       css.declaration
@@ -27,4 +27,4 @@ import { ISugarCssSettings } from '../../sugarcss.types.js';
  * @since           0.0.1
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
-export default function spaces(v: any, settings: ISugarCssSettings): any;
+export default function spaces(v: any, settings: TSugarCssSettings): any;

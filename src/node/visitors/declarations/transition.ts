@@ -1,5 +1,5 @@
 import { env } from '../../sugarcss.js';
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 /**
@@ -34,7 +34,7 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function transition(v, settings: ISugarCssSettings): any {
+export default function transition(v, settings: TSugarCssSettings): any {
   const name = v.name.replace(`--s-transition-`, ''),
     args = __parseArgs(
       v.value,

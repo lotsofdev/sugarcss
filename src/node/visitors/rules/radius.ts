@@ -1,4 +1,4 @@
-import { ISugarCssSettings } from '../../sugarcss.types.js';
+import { TSugarCssSettings } from '../../sugarcss.types.js';
 import __parseArgs from '../../utils/parseArgs.js';
 
 import __ensureRadiusExists from '../../ensure/radiusExists.js';
@@ -38,7 +38,7 @@ import { env } from '../../sugarcss.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 
-export default function radius(v: any, settings: ISugarCssSettings): any {
+export default function radius(v: any, settings: TSugarCssSettings): any {
   // parse args
   const args = {
     ...__parseArgs(v.prelude, ['name']),

@@ -1,47 +1,47 @@
-export default function sugarcss(settings?: ISugarCssSettings): any;
-export interface ISugarCssRadius {
+export default function sugarcss(settings?: TSugarCssSettings): any;
+export type TSugarCssRadius = {
     topLeft: number;
     topRight: number;
     bottomRight: number;
     bottomLeft: number;
     ast: any;
-}
-export interface ISugarCssEnv {
+};
+export type TSugarCssEnv = {
     functions: Record<string, Function>;
     rules: Record<string, Function>;
-    settings: ISugarCssSettings;
+    settings: TSugarCssSettings;
     colors: Record<string, any>;
-    shades: Record<string, ISugarCssShade>;
+    shades: Record<string, TSugarCssShade>;
     easingFunctions: Record<string, string>;
-    easings: Record<string, ISugarCssEasing>;
-    transitions: Record<string, ISugarCssTransition>;
-    medias: Record<string, ISugarCssMedia>;
-    grids: Record<string, ISugarCssGrid>;
-    spaces: ISugarCssSpace;
-    sizes: ISugarCssSize;
-    containers: Record<string, ISugarCssContainer>;
-    radiuses: Record<string, ISugarCssRadius>;
-    fonts: ISugarCssFonts;
-}
-export interface ISugarCssGrid {
+    easings: Record<string, TSugarCssEasing>;
+    transitions: Record<string, TSugarCssTransition>;
+    medias: Record<string, TSugarCssMedia>;
+    grids: Record<string, TSugarCssGrid>;
+    spaces: TSugarCssSpace;
+    sizes: TSugarCssSize;
+    containers: Record<string, TSugarCssContainer>;
+    radiuses: Record<string, TSugarCssRadius>;
+    fonts: TSugarCssFonts;
+};
+export type TSugarCssGrid = {
     layout: string;
     gap: number;
     ast: any;
-}
-export interface ISugarCssTransition {
+};
+export type TSugarCssTransition = {
     property: string;
     duration: string;
     easing: string;
     delay: string;
     behavior: string;
     ast: any;
-}
-export interface ISugarCssContainer {
+};
+export type TSugarCssContainer = {
     minWidth: number;
     maxWIdth: number;
     sidePadding: number;
-}
-export interface ISugarCssFontsFont {
+};
+export type TSugarCssFontsFont = {
     family: string;
     size: number;
     lineHeight: number;
@@ -49,38 +49,38 @@ export interface ISugarCssFontsFont {
     style: string;
     variant: string;
     stretch: string | number;
-}
-export interface ISugarCssSettings {
+};
+export type TSugarCssSettings = {
     verbose: boolean;
     mobileFirst: boolean;
     scalable: string[];
-}
-export interface ISugarCssFonts {
+};
+export type TSugarCssFonts = {
     family: Record<string, string[]>;
-    fonts: Record<string, ISugarCssFontsFont>;
-}
-export interface ISugarCssSpace {
+    fonts: Record<string, TSugarCssFontsFont>;
+};
+export type TSugarCssSpace = {
     easing: string;
     min: number;
     max: number;
-}
-export interface ISugarCssSize {
+};
+export type TSugarCssSize = {
     easing: string;
     min: number;
     max: number;
-}
-export interface ISugarCssShade {
+};
+export type TSugarCssShade = {
     darken?: number;
     lighten?: number;
     saturate?: number;
     desaturate?: number;
     spin?: number;
     alpha?: number;
-}
-export interface ISugarCssMedia {
+};
+export type TSugarCssMedia = {
     min?: number;
     max?: number;
-}
-export interface ISugarCssEasing {
+};
+export type TSugarCssEasing = {
     function: string;
-}
+};
