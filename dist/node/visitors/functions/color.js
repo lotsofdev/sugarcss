@@ -41,7 +41,9 @@ import __parseArgs from '../../utils/parseArgs.js';
  */
 export default function color(value, settings) {
     var _a, _b;
-    const args = __parseArgs(value.arguments, ['color', 'modifiers']), availableModifiers = [
+    const args = __parseArgs(value.arguments, ['color', 'modifiers'], {
+        separator: ['comma'],
+    }), availableModifiers = [
         'lighten',
         'darken',
         'saturate',

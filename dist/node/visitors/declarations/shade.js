@@ -36,12 +36,18 @@ import __parseArgs from '../../utils/parseArgs.js';
  */
 export default function share(v, settings) {
     const shade = v.name.replace(`--s-shade-`, '');
-    const args = __parseArgs(v.value, ['modifiers']);
+    const args = __parseArgs(v.value);
     const result = [];
     // save in config
-    env.shades[shade] = args.values.modifiers;
+    let finalShade = {};
+    for (let [arg, value] of Object.entries(args.values)) {
+        if (typeof value === 'object') {
+            finalShade = Object.assign(Object.assign({}, finalShade), value);
+        }
+    }
+    env.shades[shade] = finalShade;
     // custom css variables
-    for (let [key, value] of Object.entries(args.values.modifiers)) {
+    for (let [key, value] of Object.entries(finalShade)) {
         result.push({
             property: `--s-shade-${shade}-${key}`,
             value: {
@@ -59,7 +65,7 @@ export default function share(v, settings) {
         });
     }
     if (settings.verbose) {
-        console.log(`Registered shade: <cyan>${shade}</cyan>: <yellow>${JSON.stringify(args.values.modifiers, null)}</yellow>`);
+        console.log(`Registered shade: <cyan>${shade}</cyan>: <yellow>${JSON.stringify(env.shades[shade], null)}</yellow>`);
     }
     return result;
 }

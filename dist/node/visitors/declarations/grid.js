@@ -26,9 +26,7 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 export default function grid(v, settings) {
-    const name = v.name.replace(`--s-grid-`, ''), args = __parseArgs(v.value, ['layout', 'gap', 'align', 'justify'], {
-        separator: [],
-    });
+    const name = v.name.replace(`--s-grid-`, ''), args = __parseArgs(v.value, ['layout', 'gap', 'align', 'justify']);
     const result = [];
     // save in env
     if (!env.grids[name]) {

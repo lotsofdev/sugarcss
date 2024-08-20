@@ -42,7 +42,9 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 export default function color(value: any, settings: TSugarCssSettings): any {
-  const args = __parseArgs(value.arguments, ['color', 'modifiers']),
+  const args = __parseArgs(value.arguments, ['color', 'modifiers'], {
+      separator: ['comma'],
+    }),
     availableModifiers = [
       'lighten',
       'darken',

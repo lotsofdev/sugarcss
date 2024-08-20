@@ -1,4 +1,4 @@
-import { __get, __set } from '@lotsof/sugar/object';
+import { __set } from '@lotsof/sugar/object';
 import { env } from '../sugarcss.js';
 import __toString from './toString.js';
 
@@ -20,26 +20,56 @@ export default function parseArgs(
   settings?: Partial<TParseArgsSettings>,
 ): TParseArgsResult {
   const finalSettings: TParseArgsSettings = {
-    separator: ['comma', 'white-space'],
+    separator: ['comma'],
     resolve: true,
     ...(settings ?? {}),
   };
 
+  const separators = Array.isArray(finalSettings.separator)
+    ? finalSettings.separator
+    : [finalSettings.separator];
+
   const resultArgs = {};
+
+  let dashedArg: string;
 
   let argId = 0,
     currentProp = schema?.[argId] ?? `arg${argId}`;
 
-  for (let [i, arg] of args.entries()) {
+  const handleArg = (arg) => {
+    // some tokens to avoid
+    const avoid = [
+      'parenthesis-block',
+      'close-parenthesis',
+      'white-space',
+      'comment',
+      'colon',
+      'semicolon',
+    ];
+    if (avoid.includes(arg.value.type)) {
+      return;
+    }
+
+    if (separators.includes(arg.value.type)) {
+      dashedArg = '';
+      argId++;
+      currentProp = schema?.[argId] ?? `arg${argId}`;
+      return;
+    }
+
     switch (arg.type) {
       case 'dashed-ident':
-        // handle dashed ident like (--darken 10) etc...
-        if (resultArgs[currentProp] === undefined) {
-          resultArgs[currentProp] = {};
-          currentProp = `${currentProp}.${arg.value.replace(/-{1,2}/g, '')}`;
-        } else {
-          currentProp = arg.value.replace(/-{1,2}/g, '');
+        // flag that we are in a dashed ident
+        if (!dashedArg) {
+          dashedArg = currentProp;
         }
+
+        // handle dashed ident like (--darken 10) etc...
+        if (resultArgs[dashedArg] === undefined) {
+          resultArgs[dashedArg] = {};
+        }
+        currentProp = `${dashedArg}.${arg.value.replace(/-{1,2}/g, '')}`;
+
         break;
       case 'function':
         if (arg.value.name === 'cubic-bezier') {
@@ -53,66 +83,22 @@ export default function parseArgs(
 
           __set(resultArgs, currentProp, arg);
 
-          // pass to next arg
-          argId++;
-
           // set the new currentProp
           currentProp = schema?.[argId] ?? `arg${argId}`;
         }
 
         break;
-      case 'token':
-        // some tokens to avoid
-        const avoid = [
-          'parenthesis-block',
-          'close-parenthesis',
-          'white-space',
-          'comment',
-          'colon',
-          'semicolon',
-        ];
-        if (avoid.includes(arg.value.type)) {
-          continue;
-        }
-
-        const separators = Array.isArray(finalSettings.separator)
-          ? finalSettings.separator
-          : [finalSettings.separator];
-
-        if (separators.includes(arg.value.type)) {
-          currentProp = schema?.[argId] ?? `arg${argId}`;
-          continue;
-        }
-
-        // get the raw value
-        arg.rawValue = arg.value.value;
-
-        // set the value into the resultArgs
-        __set(resultArgs, currentProp, arg);
-
-        // pass to next arg
-        argId++;
-
-        // set the new currentProp
-        currentProp = schema?.[argId] ?? `arg${argId}`;
-        break;
       default:
-        if (__get(resultArgs, currentProp)) {
-          continue;
-        }
-
         // get the raw value
         arg.rawValue = arg.value.value;
 
         // handle others
         __set(resultArgs, currentProp, arg);
-
-        // pass to next arg
-        argId++;
-
-        // set the new currentProp
-        currentProp = schema?.[argId] ?? `arg${argId}`;
     }
+  };
+
+  for (let [i, arg] of args.entries()) {
+    handleArg(arg);
   }
 
   return {

@@ -30,9 +30,7 @@ import __parseArgs from '../../utils/parseArgs.js';
 
 export default function grid(v, settings: TSugarCssSettings): any {
   const name = v.name.replace(`--s-grid-`, ''),
-    args = __parseArgs(v.value, ['layout', 'gap', 'align', 'justify'], {
-      separator: [],
-    });
+    args = __parseArgs(v.value, ['layout', 'gap', 'align', 'justify']);
 
   const result: any[] = [];
 
