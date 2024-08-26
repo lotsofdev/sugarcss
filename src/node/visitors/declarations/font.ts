@@ -50,8 +50,6 @@ export default function font(v, settings: TSugarCssSettings): any {
     'stretch',
   ]);
 
-  console.log(args.values);
-
   env.fonts.fonts[name] = args.values;
 
   if (settings.verbose) {

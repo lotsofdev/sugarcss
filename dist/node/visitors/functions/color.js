@@ -1,5 +1,3 @@
-import __ensureColorExists from '../../ensure/colorExists.js';
-import { env } from '../../sugarcss.js';
 import __parseArgs from '../../utils/parseArgs.js';
 /**
  * @name            s-color
@@ -40,10 +38,8 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 export default function color(value, settings) {
-    var _a, _b;
-    const args = __parseArgs(value.arguments, ['color', 'modifiers'], {
-        separator: ['comma'],
-    }), availableModifiers = [
+    var _a, _b, _c, _d, _e, _f, _g, _h;
+    const args = __parseArgs(value.arguments, ['color', 'modifiers']), availableModifiers = [
         'lighten',
         'darken',
         'saturate',
@@ -52,44 +48,41 @@ export default function color(value, settings) {
         'alpha',
     ];
     let color = args.values.color, modifiers = args.values.modifiers;
-    __ensureColorExists(color);
-    if (typeof modifiers === 'string') {
-        if (!env.shades[`${modifiers}-${color}`] && !env.shades[modifiers]) {
-            throw new Error(`Shade ${modifiers} not found. Please register it first like so:\n --s-shade-${modifiers}: --darken 10;\n --s-shade-${modifiers}-${color}: --lighten 20;`);
-        }
-        modifiers = (_a = env.shades[`${modifiers}-${color}`]) !== null && _a !== void 0 ? _a : env.shades[modifiers];
-    }
-    if (modifiers) {
-        // check modifiers
-        for (let [mod, val] of Object.entries(modifiers)) {
-            if (!availableModifiers.includes(mod)) {
-                throw new Error(`The requested "${mod}" color modifier is invalid. Here's the available ones: ${availableModifiers.join(',')}`);
-            }
-        }
-        let lModifier = modifiers.darken
-            ? ` - ${modifiers.darken}`
-            : modifiers.lighten
-                ? ` + ${modifiers.lighten}`
-                : '', sModifier = modifiers.saturate
-            ? ` + ${modifiers.saturate}`
-            : modifiers.desaturate
-                ? ` - ${modifiers.desaturate}`
-                : '', spin = modifiers.spin ? `+ ${modifiers.spin}` : '';
-        return {
-            raw: [
-                `hsla(`,
-                `calc(var(--s-color-${color}-h)${spin}),`,
-                `calc((var(--s-color-${color}-s)${sModifier}) * 1%),`,
-                `calc((var(--s-color-${color}-l)${lModifier}) * 1%),`,
-                `${(_b = modifiers.alpha) !== null && _b !== void 0 ? _b : 1}`,
-                `)`,
-            ].join(''),
-        };
-    }
-    else {
+    // a simple color
+    if (!modifiers) {
         return {
             raw: `var(--s-color-${color})`,
         };
     }
+    if (typeof modifiers === 'string') {
+        const shade = modifiers;
+        // simple shade
+        const hSpecial = `var(--s-shade-${shade}-${color}-spin, var(--s-shade-${shade}-spin, 0))`, sSpecial = `var(--s-shade-${shade}-${color}-saturate, var(--s-shade-${shade}-saturate, 0)) - var(--s-shade-${shade}-${color}-desaturate, var(--s-shade-${shade}-desaturate, 0))`, lSpecial = `var(--s-shade-${shade}-${color}-lighten, var(--s-shade-${shade}-lighten, 0)) - var(--s-shade-${shade}-${color}-darken, var(--s-shade-${shade}-darken ,0))`, aSpecial = `var(--s-shade-${shade}-${color}-alpha, var(--s-shade-${shade}-alpha, var(--s-color-${color}-a, 1)))`;
+        const h = `calc(var(--s-color-${color}-h) + ${hSpecial})`, s = `calc(var(--s-color-${color}-s) + ${sSpecial})`, l = `calc(var(--s-color-${color}-l) + ${lSpecial})`, a = aSpecial;
+        return {
+            raw: [
+                `hsla(`,
+                `var(--s-shade-${shade}-hue, ${h}),`,
+                `calc(var(--s-shade-${shade}-saturation, ${s}) * 1%),`,
+                `calc(var(--s-shade-${shade}-lightness, ${l}) * 1%),`,
+                `${a}`,
+                `)`,
+            ].join(''),
+        };
+    }
+    // inline shades
+    return {
+        raw: 'red',
+    };
+    return {
+        raw: [
+            `hsla(`,
+            `calc(var(--s-color-${color}-h) + ${(_a = modifiers.spin) !== null && _a !== void 0 ? _a : '0'}),`,
+            `calc(${(_b = modifiers.saturation) !== null && _b !== void 0 ? _b : `(var(--s-color-${color}-s) + ${(_c = modifiers.lighten) !== null && _c !== void 0 ? _c : '0'} - ${(_d = modifiers.darken) !== null && _d !== void 0 ? _d : '0'})`} * 1%),`,
+            `calc(${(_e = modifiers.lightness) !== null && _e !== void 0 ? _e : `var(--s-color-${color}-l) + ${(_f = modifiers.saturate) !== null && _f !== void 0 ? _f : '0'} - ${(_g = modifiers.desaturate) !== null && _g !== void 0 ? _g : '0'})`} * 1%),`,
+            `${(_h = modifiers.alpha) !== null && _h !== void 0 ? _h : `var(--s-color-${color}-a, 1)`}`,
+            `)`,
+        ].join(''),
+    };
 }
 //# sourceMappingURL=color.js.map

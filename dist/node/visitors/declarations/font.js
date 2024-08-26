@@ -45,7 +45,6 @@ export default function font(v, settings) {
         'variant',
         'stretch',
     ]);
-    console.log(args.values);
     env.fonts.fonts[name] = args.values;
     if (settings.verbose) {
         console.log(`Registered font: <cyan>${name}</cyan>: <yellow>${JSON.stringify(args.values)}</yellow>`);

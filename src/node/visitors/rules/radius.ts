@@ -3,8 +3,6 @@ import __parseArgs from '../../utils/parseArgs.js';
 
 import __ensureRadiusExists from '../../ensure/radiusExists.js';
 
-import { env } from '../../sugarcss.js';
-
 /**
  * @name            s-radius
  * @namespace       css.rule
@@ -64,14 +62,33 @@ export default function radius(v: any, settings: TSugarCssSettings): any {
         declarations: {
           importantDeclarations: [],
           declarations: [
-            {
-              property: 'custom',
+            'top-left',
+            'top-right',
+            'bottom-left',
+            'bottom-right',
+          ].map((corner) => {
+            return {
+              property: 'unparsed',
               value: {
-                name: 'border-radius',
-                value: Object.values(env.radiuses[args.values.name].ast),
+                propertyId: {
+                  property: `border-${corner}-radius`,
+                  vendor_prefix: [],
+                },
+                value: [
+                  {
+                    type: 'var',
+                    value: {
+                      name: {
+                        ident: `--s-radius-${args.values.name}-${corner}`,
+                        from: null,
+                      },
+                      fallback: null,
+                    },
+                  },
+                ],
               },
-            },
-          ],
+            };
+          }),
         },
         rules: [],
         loc: {

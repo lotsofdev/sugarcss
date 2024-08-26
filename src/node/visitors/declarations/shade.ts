@@ -53,10 +53,30 @@ export default function share(v, settings: TSugarCssSettings): any {
       };
     }
   }
+  const supportedModifiers = [
+    'lighten',
+    'darken',
+    'saturate',
+    'desaturate',
+    'spin',
+    'hue',
+    'saturation',
+    'lightness',
+    'alpha',
+  ];
+
   env.shades[shade] = finalShade;
 
   // custom css variables
-  for (let [key, value] of Object.entries(finalShade)) {
+  for (let key of supportedModifiers) {
+    const value = finalShade[key] ?? 0;
+
+    if (!value) {
+      if (!['lighten', 'darken', 'saturate', 'desaturate'].includes(key)) {
+        continue;
+      }
+    }
+
     result.push({
       property: `--s-shade-${shade}-${key}`,
       value: {
@@ -66,7 +86,7 @@ export default function share(v, settings: TSugarCssSettings): any {
             type: 'token',
             value: {
               type: 'number',
-              value: value,
+              value,
             },
           },
         ],

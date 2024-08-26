@@ -27,6 +27,7 @@ import __fitRule from './visitors/rules/fit.js';
 import __gridRule from './visitors/rules/grid.js';
 import __mapColorRule from './visitors/rules/mapColor.js';
 import __mediaRule from './visitors/rules/media.js';
+import __modeRule from './visitors/rules/mode.js';
 import __radiusRule from './visitors/rules/radius.js';
 import __scrollbarRule from './visitors/rules/scrollbar.js';
 import __transitionRule from './visitors/rules/transition.js';
@@ -108,9 +109,6 @@ export function sugarize(
   }
 
   return {
-    // nonStandard: {
-    //   deepSelectorCombinator: true,
-    // },
     customAtRules: {
       ...(ligningcss?.customAtRules ?? {}),
       mixin: {
@@ -120,21 +118,7 @@ export function sugarize(
       include: {
         prelude: '<custom-ident>',
       },
-      // resolver: {
-      //   read(filePath) {
-      //     console.log('file', filePath);
-      //     return __fs.readFileSync(filePath, 'utf8');
-      //   },
-      //   resolve(specifier, from) {
-      //     console.log('reso', specifier, from);
-      //     return __path.resolve(__path.dirname(from), specifier);
-      //   },
-      // },
-      // 's-scrollbar': {
-      //   prelude: '<custom-ident>',
-      // },
     },
-
     visitor: composeVisitors(visitor),
     targets:
       ligningcss.targets ?? browserslistToTargets(browserslist('>= 0.25%')),
@@ -166,6 +150,7 @@ export default function sugarcss(
   env.rules['s-map-color'] = __mapColorRule;
   env.rules['s-container'] = __containerRule;
   env.rules['s-grid'] = __gridRule;
+  env.rules['s-mode'] = __modeRule;
 
   let mixins = new Map();
 
@@ -253,6 +238,8 @@ export default function sugarcss(
               return __mapColorRule(rule, finalSettings);
             case rule.name === `s-grid`:
               return __gridRule(rule, finalSettings);
+            case rule.name === `s-mode`:
+              return __modeRule(rule, finalSettings);
           }
         } catch (e) {
           console.error(e);
@@ -287,10 +274,7 @@ export default function sugarcss(
         },
       },
       media(rule) {
-        rule.value.query.mediaQueries?.map((mediaQuery) => {
-          return __mediaRule(mediaQuery, finalSettings);
-        });
-        return rule;
+        return __mediaRule(rule, finalSettings);
       },
     },
   };

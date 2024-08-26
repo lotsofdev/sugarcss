@@ -35,6 +35,7 @@ import __parseArgs from '../../utils/parseArgs.js';
  * @author          Olivier Bossel <olivier.bossel@gmail.com> (https://hello@lotsof.dev)
  */
 export default function share(v, settings) {
+    var _a;
     const shade = v.name.replace(`--s-shade-`, '');
     const args = __parseArgs(v.value);
     const result = [];
@@ -45,9 +46,26 @@ export default function share(v, settings) {
             finalShade = Object.assign(Object.assign({}, finalShade), value);
         }
     }
+    const supportedModifiers = [
+        'lighten',
+        'darken',
+        'saturate',
+        'desaturate',
+        'spin',
+        'hue',
+        'saturation',
+        'lightness',
+        'alpha',
+    ];
     env.shades[shade] = finalShade;
     // custom css variables
-    for (let [key, value] of Object.entries(finalShade)) {
+    for (let key of supportedModifiers) {
+        const value = (_a = finalShade[key]) !== null && _a !== void 0 ? _a : 0;
+        if (!value) {
+            if (!['lighten', 'darken', 'saturate', 'desaturate'].includes(key)) {
+                continue;
+            }
+        }
         result.push({
             property: `--s-shade-${shade}-${key}`,
             value: {
@@ -57,7 +75,7 @@ export default function share(v, settings) {
                         type: 'token',
                         value: {
                             type: 'number',
-                            value: value,
+                            value,
                         },
                     },
                 ],
